@@ -19,20 +19,26 @@ public class RsServiceTests {
 
     @Test
     void should_return_all_rs_list_json_when_get_rs_list() {
-        RsEventResponse<List<RsEvent>> response = rsService.getList(null, null);
+        RsEventResponse<List<RsEvent>> response = rsService.getRsList(null, null);
         assertEquals("get all rs list success!", response.getMessage());
     }
 
     @Test
     void should_return_rs_list_in_range_json_when_get_rs_list() {
-        RsEventResponse<List<RsEvent>> response = rsService.getList(1, 2);
+        RsEventResponse<List<RsEvent>> response = rsService.getRsList(1, 2);
         assertEquals("get rs list in range success!", response.getMessage());
     }
 
     @Test
     void should_return_rs_list_json_when_get_rs_list_by_event_id() {
-
-        RsEventResponse<RsEvent> response = rsService.getListById(1);
+        RsEventResponse<RsEvent> response = rsService.getRsListByEventId(1);
         assertEquals("get rs list by id success!", response.getMessage());
+    }
+
+    @Test
+    void should_return_rs_list_json_when_create_rs_list() {
+        RsEvent rsEvent = new RsEvent("猪肉涨价啦","经济");
+        RsEventResponse<RsEvent> response = rsService.createRsList(rsEvent);
+        assertEquals("create rs list success!", response.getMessage());
     }
 }

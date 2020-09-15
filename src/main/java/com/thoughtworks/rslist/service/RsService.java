@@ -21,27 +21,37 @@ public class RsService {
     }
 
 
-    public RsEventResponse<List<RsEvent>> getList(Integer start, Integer end) {
-        RsEventResponse<List<RsEvent>> rsEventRsEventResponse = new RsEventResponse<>();
-        rsEventRsEventResponse.setCode(200);
+    public RsEventResponse<List<RsEvent>> getRsList(Integer start, Integer end) {
+        RsEventResponse<List<RsEvent>> rsListResponse = new RsEventResponse<>();
+        rsListResponse.setCode(200);
 
         if (start == null || end == null) {
-            rsEventRsEventResponse.setMessage("get all rs list success!");
-            rsEventRsEventResponse.setData(tempRsList);
+            rsListResponse.setMessage("get all rs list success!");
+            rsListResponse.setData(tempRsList);
         }else {
-            rsEventRsEventResponse.setMessage("get rs list in range success!");
-            rsEventRsEventResponse.setData(tempRsList.subList(start - 1, end));
+            rsListResponse.setMessage("get rs list in range success!");
+            rsListResponse.setData(tempRsList.subList(start - 1, end));
         }
-        return rsEventRsEventResponse;
+        return rsListResponse;
     }
 
-    public RsEventResponse<RsEvent> getListById(Integer eventId) {
+    public RsEventResponse<RsEvent> getRsListByEventId(Integer eventId) {
+        RsEventResponse<RsEvent> reListResponse = new RsEventResponse<>();
+        reListResponse.setCode(200);
+        reListResponse.setMessage("get rs list by id success!");
+        reListResponse.setData(tempRsList.get(eventId - 1));
 
-        RsEventResponse<RsEvent> rsEventRsEventResponse = new RsEventResponse<>();
-        rsEventRsEventResponse.setCode(200);
-        rsEventRsEventResponse.setMessage("get rs list by id success!");
-        rsEventRsEventResponse.setData(tempRsList.get(eventId - 1));
+        return reListResponse;
+    }
 
-        return rsEventRsEventResponse;
+    public RsEventResponse<RsEvent> createRsList(RsEvent rsEvent) {
+
+        tempRsList.add(rsEvent);
+        RsEventResponse<RsEvent> rsListResponse = new RsEventResponse<>();
+        rsListResponse.setCode(201);
+        rsListResponse.setMessage("create rs list success!");
+        rsListResponse.setData(rsEvent);
+
+        return rsListResponse;
     }
 }

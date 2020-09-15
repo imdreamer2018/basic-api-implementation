@@ -21,14 +21,20 @@ public class RsController {
 
     @GetMapping("/list")
     @ResponseBody
-    public RsEventResponse<List<RsEvent>> getAllList(@RequestParam(required = false) Integer start,
-                                                     @RequestParam(required = false) Integer end) {
-        return rsService.getList(start, end);
+    public RsEventResponse<List<RsEvent>> getRsList(@RequestParam(required = false) Integer start,
+                                                    @RequestParam(required = false) Integer end) {
+        return rsService.getRsList(start, end);
     }
 
     @GetMapping("/list/{eventId}")
     @ResponseBody
-    public RsEventResponse<RsEvent> getListById(@PathVariable Integer eventId) {
-        return rsService.getListById(eventId);
+    public RsEventResponse<RsEvent> getRsListByEventId(@PathVariable Integer eventId) {
+        return rsService.getRsListByEventId(eventId);
+    }
+
+    @PostMapping("/list")
+    @ResponseBody
+    public RsEventResponse<RsEvent> createRsList(@RequestBody RsEvent rsEvent) {
+        return rsService.createRsList(rsEvent);
     }
 }
