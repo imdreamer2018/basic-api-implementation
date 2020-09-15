@@ -23,8 +23,6 @@ public class RsService {
 
 
     public RsEventResponse<List<RsEvent>> getRsList(Integer start, Integer end) {
-        verifyEventId(start);
-        verifyEventId(end);
         RsEventResponse<List<RsEvent>> rsListResponse = new RsEventResponse<>();
         rsListResponse.setCode(200);
 
@@ -32,6 +30,8 @@ public class RsService {
             rsListResponse.setMessage("get all rs list success!");
             rsListResponse.setData(tempRsList);
         }else {
+            verifyEventId(start);
+            verifyEventId(end);
             rsListResponse.setMessage("get rs list in range success!");
             rsListResponse.setData(tempRsList.subList(start - 1, end));
         }
