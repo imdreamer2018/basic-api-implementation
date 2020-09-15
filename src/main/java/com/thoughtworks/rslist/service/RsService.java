@@ -21,13 +21,17 @@ public class RsService {
     }
 
 
-    public RsEventResponse<List<RsEvent>> getAllList() {
-
+    public RsEventResponse<List<RsEvent>> getList(Integer start, Integer end) {
         RsEventResponse<List<RsEvent>> rsEventRsEventResponse = new RsEventResponse<>();
         rsEventRsEventResponse.setCode(200);
-        rsEventRsEventResponse.setMessage("get all rs list success!");
-        rsEventRsEventResponse.setData(tempRsList);
 
+        if (start == null || end == null) {
+            rsEventRsEventResponse.setMessage("get all rs list success!");
+            rsEventRsEventResponse.setData(tempRsList);
+        }else {
+            rsEventRsEventResponse.setMessage("get rs list in range success!");
+            rsEventRsEventResponse.setData(tempRsList.subList(start - 1, end));
+        }
         return rsEventRsEventResponse;
     }
 
@@ -36,7 +40,7 @@ public class RsService {
         RsEventResponse<RsEvent> rsEventRsEventResponse = new RsEventResponse<>();
         rsEventRsEventResponse.setCode(200);
         rsEventRsEventResponse.setMessage("get rs list by id success!");
-        rsEventRsEventResponse.setData(tempRsList.get(eventId));
+        rsEventRsEventResponse.setData(tempRsList.get(eventId - 1));
 
         return rsEventRsEventResponse;
     }

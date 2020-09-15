@@ -21,6 +21,9 @@ public class RsControllerTests {
     void should_return_status_ok_when_get_rs_list() throws Exception {
         mockMvc.perform(get("/rs/list"))
                 .andExpect(status().isOk());
+
+        mockMvc.perform(get("/rs/list?start=1&end=2"))
+                .andExpect(status().isOk());
     }
 
     @Test

@@ -21,8 +21,9 @@ public class RsController {
 
     @GetMapping("/list")
     @ResponseBody
-    public RsEventResponse<List<RsEvent>> getAllList() {
-        return rsService.getAllList();
+    public RsEventResponse<List<RsEvent>> getAllList(@RequestParam(required = false) Integer start,
+                                                     @RequestParam(required = false) Integer end) {
+        return rsService.getList(start, end);
     }
 
     @GetMapping("/list/{eventId}")
