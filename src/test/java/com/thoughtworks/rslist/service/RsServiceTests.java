@@ -41,4 +41,11 @@ public class RsServiceTests {
         RsEventResponse<RsEvent> response = rsService.createRsList(rsEvent);
         assertEquals("create rs list success!", response.getMessage());
     }
+
+    @Test
+    void should_return_rs_list_json_when_update_rs_list_by_event_id() {
+        RsEvent rsEvent = new RsEvent("猪肉涨价啦","经济");
+        RsEventResponse<RsEvent> response = rsService.updateRsList(1, rsEvent);
+        assertEquals("update rs list by event id success!", response.getMessage());
+    }
 }

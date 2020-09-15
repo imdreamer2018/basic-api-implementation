@@ -45,7 +45,6 @@ public class RsService {
     }
 
     public RsEventResponse<RsEvent> createRsList(RsEvent rsEvent) {
-
         tempRsList.add(rsEvent);
         RsEventResponse<RsEvent> rsListResponse = new RsEventResponse<>();
         rsListResponse.setCode(201);
@@ -53,5 +52,18 @@ public class RsService {
         rsListResponse.setData(rsEvent);
 
         return rsListResponse;
+    }
+
+    public RsEventResponse<RsEvent> updateRsList(Integer eventId, RsEvent rsEvent) {
+        tempRsList.remove(eventId - 1);
+        tempRsList.add(eventId - 1, rsEvent);
+
+        RsEventResponse<RsEvent> rsListResponse = new RsEventResponse<>();
+        rsListResponse.setCode(200);
+        rsListResponse.setMessage("update rs list by event id success!");
+        rsListResponse.setData(rsEvent);
+
+        return rsListResponse;
+
     }
 }

@@ -4,6 +4,7 @@ import com.thoughtworks.rslist.dto.RsEventResponse;
 import com.thoughtworks.rslist.entity.RsEvent;
 import com.thoughtworks.rslist.service.RsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -33,8 +34,15 @@ public class RsController {
     }
 
     @PostMapping("/list")
+    @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public RsEventResponse<RsEvent> createRsList(@RequestBody RsEvent rsEvent) {
         return rsService.createRsList(rsEvent);
+    }
+
+    @PutMapping("/list/{eventId}")
+    @ResponseBody
+    public RsEventResponse<RsEvent> updateRsList(@PathVariable Integer eventId, @RequestBody RsEvent rsEvent) {
+        return rsService.updateRsList(eventId, rsEvent);
     }
 }
