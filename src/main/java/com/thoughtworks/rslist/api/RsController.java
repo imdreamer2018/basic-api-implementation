@@ -43,6 +43,12 @@ public class RsController {
     @PutMapping("/list/{eventId}")
     @ResponseBody
     public RsEventResponse<RsEvent> updateRsList(@PathVariable Integer eventId, @RequestBody RsEvent rsEvent) {
-        return rsService.updateRsList(eventId, rsEvent);
+        return rsService.updateRsListByEventId(eventId, rsEvent);
+    }
+
+    @DeleteMapping("/list/{eventId}")
+    @ResponseBody
+    public RsEventResponse<RsEvent> deleleRsList(@PathVariable Integer eventId) {
+        return rsService.deleteRsLIstByEventId(eventId);
     }
 }

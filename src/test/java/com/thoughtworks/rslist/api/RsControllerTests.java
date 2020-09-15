@@ -55,6 +55,12 @@ public class RsControllerTests {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    void should_return_status_ok_when_delete_rs_list() throws Exception {
+        mockMvc.perform(delete("/rs/list/1"))
+                .andExpect(status().isOk());
+    }
+
 
 
 }

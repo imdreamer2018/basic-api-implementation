@@ -2,6 +2,7 @@ package com.thoughtworks.rslist.service;
 
 import com.thoughtworks.rslist.dto.RsEventResponse;
 import com.thoughtworks.rslist.entity.RsEvent;
+import com.thoughtworks.rslist.exception.NullPointException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,6 +23,8 @@ public class RsService {
 
 
     public RsEventResponse<List<RsEvent>> getRsList(Integer start, Integer end) {
+        verifyEventId(start);
+        verifyEventId(end);
         RsEventResponse<List<RsEvent>> rsListResponse = new RsEventResponse<>();
         rsListResponse.setCode(200);
 
@@ -36,6 +39,7 @@ public class RsService {
     }
 
     public RsEventResponse<RsEvent> getRsListByEventId(Integer eventId) {
+        verifyEventId(eventId);
         RsEventResponse<RsEvent> reListResponse = new RsEventResponse<>();
         reListResponse.setCode(200);
         reListResponse.setMessage("get rs list by id success!");
@@ -54,9 +58,13 @@ public class RsService {
         return rsListResponse;
     }
 
-    public RsEventResponse<RsEvent> updateRsList(Integer eventId, RsEvent rsEvent) {
+    public RsEventResponse<RsEvent> updateRsListByEventId(Integer eventId, RsEvent rsEvent) {
+        verifyEventId(eventId);
+        RsEvent currentRsEvent = tempRsList.get(eventId - 1);
+        currentRsEvent.setEventName(rsEvent.getEventName().isEmpty()?currentRsEvent.getEventName(): rsEvent.getEventName());
+        currentRsEvent.setKeyWord(rsEvent.getKeyWord().isEmpty()?currentRsEvent.getKeyWord(): rsEvent.getKeyWord());
         tempRsList.remove(eventId - 1);
-        tempRsList.add(eventId - 1, rsEvent);
+        tempRsList.add(eventId - 1, currentRsEvent);
 
         RsEventResponse<RsEvent> rsListResponse = new RsEventResponse<>();
         rsListResponse.setCode(200);
@@ -66,4 +74,25 @@ public class RsService {
         return rsListResponse;
 
     }
+
+    public RsEventResponse<RsEvent> deleteRsLIstByEventId(Integer eventId) {
+        verifyEventId(eventId);
+        RsEvent currentRsEvent = tempRsList.get(eventId - 1);
+        tempRsList.remove(eventId - 1);
+
+        RsEventResponse<RsEvent> rsListResponse = new RsEventResponse<>();
+        rsListResponse.setCode(200);
+        rsListResponse.setMessage("delete rs list by event id success!");
+        rsListResponse.setData(currentRsEvent);
+
+        return rsListResponse;
+    }
+
+    private void verifyEventId(Integer eventId) {
+        if (eventId <= 0 || eventId > tempRsList.size()) {
+            throw new NullPointException("event id is invalid input cause null point exception");
+        }
+    }
+
+
 }

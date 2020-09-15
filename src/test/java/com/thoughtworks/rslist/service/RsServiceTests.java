@@ -45,7 +45,13 @@ public class RsServiceTests {
     @Test
     void should_return_rs_list_json_when_update_rs_list_by_event_id() {
         RsEvent rsEvent = new RsEvent("猪肉涨价啦","经济");
-        RsEventResponse<RsEvent> response = rsService.updateRsList(1, rsEvent);
+        RsEventResponse<RsEvent> response = rsService.updateRsListByEventId(1, rsEvent);
         assertEquals("update rs list by event id success!", response.getMessage());
+    }
+
+    @Test
+    void should_return_rs_list_json_when_delete_rs_list_by_event_id() {
+        RsEventResponse<RsEvent> response = rsService.deleteRsLIstByEventId(1);
+        assertEquals("delete rs list by event id success!", response.getMessage());
     }
 }
