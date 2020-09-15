@@ -23,6 +23,12 @@ public class RsControllerTests {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    void should_return_status_ok_when_get_rs_list_by_event_id() throws Exception {
+        mockMvc.perform(get("/rs/list/1"))
+                .andExpect(status().isOk());
+    }
+
 
 
 }

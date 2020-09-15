@@ -19,8 +19,15 @@ public class RsServiceTests {
     RsService rsService;
 
     @Test
-    void should_return_rsList_json_when_get_rs_list() throws Exception {
+    void should_return_all_rs_list_json_when_get_rs_list() {
         RsEventResponse<List<RsEvent>> response = rsService.getAllList();
         assertEquals("get all rs list success!", response.getMessage());
+    }
+
+    @Test
+    void should_return_rs_list_json_when_get_rs_list_by_event_id() {
+
+        RsEventResponse<RsEvent> response = rsService.getListById(1);
+        assertEquals("get rs list by id success!", response.getMessage());
     }
 }

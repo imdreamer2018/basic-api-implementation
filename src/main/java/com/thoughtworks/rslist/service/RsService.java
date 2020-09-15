@@ -30,4 +30,14 @@ public class RsService {
 
         return rsEventRsEventResponse;
     }
+
+    public RsEventResponse<RsEvent> getListById(Integer eventId) {
+
+        RsEventResponse<RsEvent> rsEventRsEventResponse = new RsEventResponse<>();
+        rsEventRsEventResponse.setCode(200);
+        rsEventRsEventResponse.setMessage("get rs list by id success!");
+        rsEventRsEventResponse.setData(tempRsList.get(eventId));
+
+        return rsEventRsEventResponse;
+    }
 }

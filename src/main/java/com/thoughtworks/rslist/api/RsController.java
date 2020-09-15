@@ -4,10 +4,7 @@ import com.thoughtworks.rslist.dto.RsEventResponse;
 import com.thoughtworks.rslist.entity.RsEvent;
 import com.thoughtworks.rslist.service.RsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,5 +23,11 @@ public class RsController {
     @ResponseBody
     public RsEventResponse<List<RsEvent>> getAllList() {
         return rsService.getAllList();
+    }
+
+    @GetMapping("/list/{eventId}")
+    @ResponseBody
+    public RsEventResponse<RsEvent> getListById(@PathVariable Integer eventId) {
+        return rsService.getListById(eventId);
     }
 }
