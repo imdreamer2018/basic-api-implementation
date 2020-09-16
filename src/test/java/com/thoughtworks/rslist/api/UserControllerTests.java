@@ -39,7 +39,7 @@ public class UserControllerTests {
         String json = objectMapper.writeValueAsString(user);
         mockMvc.perform(post("/users")
                 .content(json).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -55,6 +55,16 @@ public class UserControllerTests {
     @Test
     void should_return_status_bad_request_when_register_user_of_username_is_null() throws Exception {
         User user = new User("",18,"male","qian.yang@twu.com","17607114747");
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(user);
+        mockMvc.perform(post("/users")
+                .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void should_return_status_bad_request_when_register_user_of_age_is_null() throws Exception {
+        User user = new User("hhh",null,"male","qian.yang@twu.com","17607114747");
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(user);
         mockMvc.perform(post("/users")
