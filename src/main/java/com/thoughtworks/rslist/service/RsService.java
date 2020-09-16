@@ -31,7 +31,7 @@ public class RsService {
     }
 
 
-    public RsEventResponse<List<RsEvent>> getRsList(Integer start, Integer end) {
+    public ResponseEntity<RsEventResponse<List<RsEvent>>> getRsList(Integer start, Integer end) {
         RsEventResponse<List<RsEvent>> rsListResponse = new RsEventResponse<>();
         rsListResponse.setCode(200);
 
@@ -43,7 +43,7 @@ public class RsService {
             rsListResponse.setMessage("get rs list in range success!");
             rsListResponse.setData(tempRsList.subList(start - 1, end));
         }
-        return rsListResponse;
+        return ResponseEntity.ok().body(rsListResponse);
     }
 
     public RsEventResponse<RsEvent> getRsListByEventId(Integer eventId) {

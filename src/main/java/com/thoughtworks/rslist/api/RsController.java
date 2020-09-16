@@ -1,6 +1,5 @@
 package com.thoughtworks.rslist.api;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.thoughtworks.rslist.dto.RsEventResponse;
 import com.thoughtworks.rslist.entity.RsEvent;
 import com.thoughtworks.rslist.service.RsService;
@@ -9,8 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequestMapping(path = "/rs")
 @RestController
@@ -23,8 +20,8 @@ public class RsController {
     @GetMapping("/lists")
     @ResponseStatus()
     @ResponseBody
-    public RsEventResponse<List<RsEvent>> getRsList(@RequestParam(required = false) Integer start,
-                                                    @RequestParam(required = false) Integer end) {
+    public ResponseEntity getRsList(@RequestParam(required = false) Integer start,
+                                                                    @RequestParam(required = false) Integer end) {
         return rsService.getRsList(start, end);
     }
 

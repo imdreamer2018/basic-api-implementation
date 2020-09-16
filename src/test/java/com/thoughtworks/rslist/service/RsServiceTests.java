@@ -24,14 +24,14 @@ public class RsServiceTests {
 
     @Test
     void should_return_all_rs_list_json_when_get_rs_list() {
-        RsEventResponse<List<RsEvent>> response = rsService.getRsList(null, null);
-        assertEquals("get all rs list success!", response.getMessage());
+        ResponseEntity<RsEventResponse<List<RsEvent>>> response = rsService.getRsList(null, null);
+        assertEquals("get all rs list success!", Objects.requireNonNull(response.getBody()).getMessage());
     }
 
     @Test
     void should_return_rs_list_in_range_json_when_get_rs_list() {
-        RsEventResponse<List<RsEvent>> response = rsService.getRsList(1, 2);
-        assertEquals("get rs list in range success!", response.getMessage());
+        ResponseEntity<RsEventResponse<List<RsEvent>>> response = rsService.getRsList(1, 2);
+        assertEquals("get rs list in range success!", Objects.requireNonNull(response.getBody()).getMessage());
     }
 
     @Test
