@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
     public ErrorDTO RsNullPointErrorHandler(HttpServletRequest req, NullPointException e) {
         ErrorDTO r = new ErrorDTO();
         r.setMessage(e.getMessage());
-        r.setCode(200);
+        r.setCode(401);
         return r;
     }
 

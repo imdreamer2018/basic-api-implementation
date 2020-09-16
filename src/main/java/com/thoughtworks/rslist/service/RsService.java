@@ -32,8 +32,7 @@ public class RsService {
             rsListResponse.setMessage("get all rs list success!");
             rsListResponse.setData(tempRsList);
         }else {
-            verifyEventId(start);
-            verifyEventId(end);
+            verifyEventId(start, end);
             rsListResponse.setMessage("get rs list in range success!");
             rsListResponse.setData(tempRsList.subList(start - 1, end));
         }
@@ -93,6 +92,12 @@ public class RsService {
     private void verifyEventId(Integer eventId) {
         if (eventId <= 0 || eventId > tempRsList.size()) {
             throw new NullPointException("event id is invalid input cause null point exception");
+        }
+    }
+
+    private void verifyEventId(Integer startEventId, Integer endEventId) {
+        if (startEventId > endEventId || startEventId <= 0 || startEventId > tempRsList.size() || endEventId > tempRsList.size()) {
+            throw new NullPointException("invalid input cause null point exception");
         }
     }
 
