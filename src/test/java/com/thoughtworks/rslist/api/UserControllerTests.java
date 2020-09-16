@@ -24,7 +24,7 @@ public class UserControllerTests {
 
     @Test
     void should_return_status_create_when_create_user_success() throws Exception {
-        User user = new User("yangqian1",18,"male","qian.yang@twu.com","17607114747");
+        User user = new User("hello",18,"male","qian.yang@twu.com","17607114747");
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(user);
         mockMvc.perform(post("/users")
@@ -35,6 +35,16 @@ public class UserControllerTests {
     @Test
     void should_return_status_bad_request_when_register_user_is_existed() throws Exception {
         User user = new User("yangqian",18,"male","qian.yang@twu.com","17607114747");
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(user);
+        mockMvc.perform(post("/users")
+                .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void should_return_status_bad_request_when_register_user_of_username_length_more_than_8() throws Exception {
+        User user = new User("yangqian123",18,"male","qian.yang@twu.com","17607114747");
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(user);
         mockMvc.perform(post("/users")

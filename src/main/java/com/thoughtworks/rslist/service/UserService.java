@@ -21,19 +21,24 @@ public class UserService {
     }
 
     public UserResponse<User> registerUser(User user) {
-        verifyUserIsExited(user.getUserName());
-        userList.add(user);
         UserResponse<User> userResponse = new UserResponse<>();
-        userResponse.setCode(201);
-        userResponse.setMessage("register user success!");
-        userResponse.setData(user);
+        if (verifyUserIsExited(user.getUserName())) {
+            userResponse.setCode(200);
+            userResponse.setMessage("register user that username is existed");
+        } else {
+            userList.add(user);
+            userResponse.setCode(201);
+            userResponse.setMessage("register user success!");
+            userResponse.setData(user);
+        }
         return userResponse;
     }
 
-    private void verifyUserIsExited(String userName) {
+    private boolean verifyUserIsExited(String userName) {
         if (userList.stream().anyMatch(user -> user.getUserName().equals(userName))) {
-            throw new BaseUserException("user name is existed!");
+            return true;
         }
+        return false;
     }
 
 }

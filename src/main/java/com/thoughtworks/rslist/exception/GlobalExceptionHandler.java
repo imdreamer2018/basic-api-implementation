@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ValidationException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -27,7 +28,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = BaseUserException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorDTO RsNullPointErrorHandler(HttpServletRequest req, BaseUserException e) {
+    public ErrorDTO UserNullPointErrorHandler(HttpServletRequest req, BaseUserException e) {
         ErrorDTO r = new ErrorDTO();
         r.setMessage(e.getMessage());
         r.setCode(400);

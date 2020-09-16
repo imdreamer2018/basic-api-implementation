@@ -5,6 +5,7 @@ import com.thoughtworks.rslist.entity.User;
 import com.thoughtworks.rslist.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping(path = "/")
@@ -16,7 +17,7 @@ public class UserController {
 
     @PostMapping("users")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserResponse<User> registerUser(@RequestBody User user) {
+    public UserResponse<User> registerUser(@Validated @RequestBody User user) {
         return userService.registerUser(user);
     }
 }
