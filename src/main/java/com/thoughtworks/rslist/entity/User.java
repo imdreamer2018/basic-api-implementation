@@ -17,6 +17,6 @@ public class User {
 
     private String email;
 
-    private Integer phone;
+    private String phone;
 
 }

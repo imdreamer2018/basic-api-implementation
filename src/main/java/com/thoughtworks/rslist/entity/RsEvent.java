@@ -13,5 +13,7 @@ public class RsEvent {
 
     private String keyWord;
 
+    private User user;
+
 
 }

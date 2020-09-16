@@ -2,6 +2,7 @@ package com.thoughtworks.rslist.service;
 
 import com.thoughtworks.rslist.dto.RsEventResponse;
 import com.thoughtworks.rslist.entity.RsEvent;
+import com.thoughtworks.rslist.entity.User;
 import com.thoughtworks.rslist.exception.NullPointException;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +16,10 @@ public class RsService {
 
     private static List<RsEvent> initRsList() {
         List<RsEvent> rsList = new ArrayList<>();
-        rsList.add(new RsEvent("第一条事件","无分类"));
-        rsList.add(new RsEvent("第二条事件","无分类"));
-        rsList.add(new RsEvent("第三条事件","无分类"));
+        User user = new User("yangqian",18,"male","qian.yang@twu.com","17607114747");
+        rsList.add(new RsEvent("第一条事件","无分类", user));
+        rsList.add(new RsEvent("第二条事件","无分类", user));
+        rsList.add(new RsEvent("第三条事件","无分类", user));
         return rsList;
     }
 
