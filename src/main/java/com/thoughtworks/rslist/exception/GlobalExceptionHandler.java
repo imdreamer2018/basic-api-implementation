@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
     public ErrorDTO RsNullPointErrorHandler(HttpServletRequest req, BaseRsListException e) {
         ErrorDTO r = new ErrorDTO();
         r.setMessage(e.getMessage());
-        r.setCode(401);
+        r.setCode(400);
         return r;
     }
 
@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
     public ErrorDTO RsNullPointErrorHandler(HttpServletRequest req, BaseUserException e) {
         ErrorDTO r = new ErrorDTO();
         r.setMessage(e.getMessage());
-        r.setCode(401);
+        r.setCode(400);
         return r;
     }
 
