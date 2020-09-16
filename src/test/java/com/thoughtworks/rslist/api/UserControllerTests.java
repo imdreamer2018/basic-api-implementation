@@ -134,7 +134,7 @@ public class UserControllerTests {
 
     @Test
     void should_return_status_ok_when_get_user_by_username_success() throws Exception {
-        mockMvc.perform(get("/users/1"))
+        mockMvc.perform(get("/users/yangqian"))
                 .andExpect(status().isOk());
     }
 }

@@ -20,4 +20,11 @@ public class UserController {
     public UserResponse<User> registerUser(@Validated @RequestBody User user) {
         return userService.registerUser(user);
     }
+
+    @GetMapping("users/{username}")
+    @ResponseBody
+    public UserResponse<User> getUser(@PathVariable String username) {
+        return userService.getUser(username);
+    }
+
 }
