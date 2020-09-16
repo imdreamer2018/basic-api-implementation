@@ -18,6 +18,7 @@ public class User {
     @Max(100)
     private Integer age;
 
+    @NotNull
     private String gender;
 
     private String email;
