@@ -46,6 +46,14 @@ public class RsServiceTests {
     }
 
     @Test
+    void should_return_rs_list_json_when_create_rs_list_and_user_is_not_existed() {
+        User user = new User("21321312",18,"male","qian.yang@twu.com","17607114747");
+        RsEvent rsEvent = new RsEvent("猪肉涨价啦","经济", user);
+        RsEventResponse<RsEvent> response = rsService.createRsList(rsEvent);
+        assertEquals("create rs list and user success!", response.getMessage());
+    }
+
+    @Test
     void should_return_rs_list_json_when_update_rs_list_by_event_id() {
         RsEvent rsEvent = new RsEvent("猪肉涨价啦","经济", user);
         RsEventResponse<RsEvent> response = rsService.updateRsListByEventId(1, rsEvent);
