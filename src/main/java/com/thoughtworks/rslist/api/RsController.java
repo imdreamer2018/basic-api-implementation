@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RequestMapping(path = "/rs")
@@ -19,6 +18,7 @@ public class RsController {
 
 
     @GetMapping("/lists")
+    @ResponseStatus()
     @ResponseBody
     public RsEventResponse<List<RsEvent>> getRsList(@RequestParam(required = false) Integer start,
                                                     @RequestParam(required = false) Integer end) {

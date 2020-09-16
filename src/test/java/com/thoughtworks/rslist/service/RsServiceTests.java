@@ -2,6 +2,7 @@ package com.thoughtworks.rslist.service;
 
 import com.thoughtworks.rslist.dto.RsEventResponse;
 import com.thoughtworks.rslist.entity.RsEvent;
+import com.thoughtworks.rslist.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +17,8 @@ public class RsServiceTests {
 
     @Autowired
     RsService rsService;
+
+    User user = new User("yangqian",18,"male","qian.yang@twu.com","17607114747");
 
     @Test
     void should_return_all_rs_list_json_when_get_rs_list() {
@@ -37,14 +40,14 @@ public class RsServiceTests {
 
     @Test
     void should_return_rs_list_json_when_create_rs_list() {
-        RsEvent rsEvent = new RsEvent("猪肉涨价啦","经济");
+        RsEvent rsEvent = new RsEvent("猪肉涨价啦","经济", user);
         RsEventResponse<RsEvent> response = rsService.createRsList(rsEvent);
         assertEquals("create rs list success!", response.getMessage());
     }
 
     @Test
     void should_return_rs_list_json_when_update_rs_list_by_event_id() {
-        RsEvent rsEvent = new RsEvent("猪肉涨价啦","经济");
+        RsEvent rsEvent = new RsEvent("猪肉涨价啦","经济", user);
         RsEventResponse<RsEvent> response = rsService.updateRsListByEventId(1, rsEvent);
         assertEquals("update rs list by event id success!", response.getMessage());
     }

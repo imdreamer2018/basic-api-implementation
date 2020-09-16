@@ -2,6 +2,7 @@ package com.thoughtworks.rslist.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.rslist.entity.RsEvent;
+import com.thoughtworks.rslist.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -37,7 +38,8 @@ public class RsControllerTests {
 
     @Test
     void should_return_status_create_when_create_rs_list() throws Exception {
-        RsEvent rsEvent = new RsEvent("猪肉涨价啦","经济");
+        User user = new User("yangqian",18,"male","qian.yang@twu.com","17607114747");
+        RsEvent rsEvent = new RsEvent("猪肉涨价啦","经济", user);
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(rsEvent);
         mockMvc.perform(post("/rs/list")
@@ -46,8 +48,9 @@ public class RsControllerTests {
     }
 
     @Test
-    void should_return_status_ok_when_create_rs_list() throws Exception {
-        RsEvent rsEvent = new RsEvent("猪肉涨价啦","经济");
+    void should_return_status_ok_when_update_rs_list() throws Exception {
+        User user = new User("yangqian",18,"male","qian.yang@twu.com","17607114747");
+        RsEvent rsEvent = new RsEvent("猪肉涨价啦","经济", user);
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(rsEvent);
         mockMvc.perform(put("/rs/list/1")

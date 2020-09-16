@@ -3,7 +3,7 @@ package com.thoughtworks.rslist.service;
 import com.thoughtworks.rslist.dto.RsEventResponse;
 import com.thoughtworks.rslist.entity.RsEvent;
 import com.thoughtworks.rslist.entity.User;
-import com.thoughtworks.rslist.exception.NullPointException;
+import com.thoughtworks.rslist.exception.BaseRsListException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -91,13 +91,13 @@ public class RsService {
 
     private void verifyEventId(Integer eventId) {
         if (eventId <= 0 || eventId > tempRsList.size()) {
-            throw new NullPointException("event id is invalid input cause null point exception");
+            throw new BaseRsListException("event id is invalid input cause null point exception");
         }
     }
 
     private void verifyEventId(Integer startEventId, Integer endEventId) {
         if (startEventId > endEventId || startEventId <= 0 || startEventId > tempRsList.size() || endEventId > tempRsList.size()) {
-            throw new NullPointException("invalid input cause null point exception");
+            throw new BaseRsListException("invalid input cause null point exception");
         }
     }
 

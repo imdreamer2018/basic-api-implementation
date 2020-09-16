@@ -14,10 +14,20 @@ import javax.servlet.http.HttpServletRequest;
 public class GlobalExceptionHandler {
 
 
-    @ExceptionHandler(value = NullPointException.class)
+    @ExceptionHandler(value = BaseRsListException.class)
     @ResponseBody
-    @ResponseStatus(HttpStatus.OK)
-    public ErrorDTO RsNullPointErrorHandler(HttpServletRequest req, NullPointException e) {
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorDTO RsNullPointErrorHandler(HttpServletRequest req, BaseRsListException e) {
+        ErrorDTO r = new ErrorDTO();
+        r.setMessage(e.getMessage());
+        r.setCode(401);
+        return r;
+    }
+
+    @ExceptionHandler(value = BaseUserException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorDTO RsNullPointErrorHandler(HttpServletRequest req, BaseUserException e) {
         ErrorDTO r = new ErrorDTO();
         r.setMessage(e.getMessage());
         r.setCode(401);

@@ -1,11 +1,9 @@
 package com.thoughtworks.rslist.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Setter
-@Getter
+@Data
 @AllArgsConstructor
 public class User {
 
