@@ -43,11 +43,15 @@ public class UserService {
     public UserResponse<User> getUser(String username) {
         UserResponse<User> userResponse = new UserResponse<>();
         userResponse.setCode(200);
-        userResponse.setMessage("get user info success!");
-        userResponse.setData(userList.stream()
+        List<User> userInfoList = userList.stream()
                 .filter(user -> user.getUserName().equals(username))
-                .collect(Collectors.toList())
-                .get(0));
+                .collect(Collectors.toList());
+        if (userInfoList.isEmpty()) {
+            userResponse.setMessage("can not find this user!");
+            return userResponse;
+        }
+        userResponse.setMessage("get user info success!");
+        userResponse.setData(userInfoList.get(0));
         return userResponse;
     }
 }

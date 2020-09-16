@@ -42,4 +42,10 @@ public class UserServiceTests {
         UserResponse<User> userUserResponse = userService.getUser("yangqian");
         assertEquals("get user info success!", userUserResponse.getMessage());
     }
+
+    @Test
+    void should_return_null_user_info_when_get_user_by_username() {
+        UserResponse<User> userUserResponse = userService.getUser("312312");
+        assertEquals("can not find this user!", userUserResponse.getMessage());
+    }
 }
