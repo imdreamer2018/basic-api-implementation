@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -38,4 +40,14 @@ public class UserService {
         return userList.stream().anyMatch(user -> user.getUserName().equals(userName));
     }
 
+    public UserResponse<User> getUser(String username) {
+        UserResponse<User> userResponse = new UserResponse<>();
+        userResponse.setCode(200);
+        userResponse.setMessage("get user info success!");
+        userResponse.setData(userList.stream()
+                .filter(user -> user.getUserName().equals(username))
+                .collect(Collectors.toList())
+                .get(0));
+        return userResponse;
+    }
 }

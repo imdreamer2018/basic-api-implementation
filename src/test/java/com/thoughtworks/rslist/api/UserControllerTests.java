@@ -131,4 +131,10 @@ public class UserControllerTests {
                 .content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    void should_return_status_ok_when_get_user_by_username_success() throws Exception {
+        mockMvc.perform(get("/users/1"))
+                .andExpect(status().isOk());
+    }
 }
