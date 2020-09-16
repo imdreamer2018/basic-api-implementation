@@ -121,4 +121,14 @@ public class UserControllerTests {
                 .content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    void should_return_status_bad_request_when_register_user_of_phone_number_length_is_not_11() throws Exception {
+        User user = new User("hhh",15,"male","1@twu.com","1760711474");
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(user);
+        mockMvc.perform(post("/users")
+                .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
 }
