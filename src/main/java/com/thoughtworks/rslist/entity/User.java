@@ -3,6 +3,7 @@ package com.thoughtworks.rslist.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 @Data
