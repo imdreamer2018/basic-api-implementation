@@ -17,36 +17,34 @@ public class RsController {
     @Autowired
     RsService rsService;
 
-    private List<String> rsList = Arrays.asList("第一条事件", "第二条事件", "第三条事件");
 
-
-    @GetMapping("/list")
+    @GetMapping("/lists")
     @ResponseBody
     public RsEventResponse<List<RsEvent>> getRsList(@RequestParam(required = false) Integer start,
                                                     @RequestParam(required = false) Integer end) {
         return rsService.getRsList(start, end);
     }
 
-    @GetMapping("/list/{eventId}")
+    @GetMapping("/lists/{eventId}")
     @ResponseBody
     public RsEventResponse<RsEvent> getRsListByEventId(@PathVariable Integer eventId) {
         return rsService.getRsListByEventId(eventId);
     }
 
-    @PostMapping("/list")
+    @PostMapping("/lists")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public RsEventResponse<RsEvent> createRsList(@RequestBody RsEvent rsEvent) {
         return rsService.createRsList(rsEvent);
     }
 
-    @PutMapping("/list/{eventId}")
+    @PutMapping("/lists/{eventId}")
     @ResponseBody
     public RsEventResponse<RsEvent> updateRsList(@PathVariable Integer eventId, @RequestBody RsEvent rsEvent) {
         return rsService.updateRsListByEventId(eventId, rsEvent);
     }
 
-    @DeleteMapping("/list/{eventId}")
+    @DeleteMapping("/lists/{eventId}")
     @ResponseBody
     public RsEventResponse<RsEvent> deleleRsList(@PathVariable Integer eventId) {
         return rsService.deleteRsLIstByEventId(eventId);
