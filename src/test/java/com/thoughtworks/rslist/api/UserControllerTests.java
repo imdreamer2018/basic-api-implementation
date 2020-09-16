@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -32,7 +33,7 @@ public class UserControllerTests {
     }
 
     @Test
-    void should_return_base_user_exception_when_register_user_is_existed() throws Exception {
+    void should_return_status_bad_request_when_register_user_is_existed() throws Exception {
         User user = new User("yangqian",18,"male","qian.yang@twu.com","17607114747");
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(user);
