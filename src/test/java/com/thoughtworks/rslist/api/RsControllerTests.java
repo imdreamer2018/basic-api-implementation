@@ -38,14 +38,16 @@ public class RsControllerTests {
 
     @Test
     void should_return_status_create_when_create_rs_list() throws Exception {
-        User user = new User("yangqian",18,"male","qian.yang@twu.com","17607114747");
+        User user = new User("132",null,"male","qian.yang@twu.com","17607114747");
         RsEvent rsEvent = new RsEvent("猪肉涨价啦","经济", user);
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(rsEvent);
-        mockMvc.perform(post("/rs/list")
+        mockMvc.perform(post("/rs/lists")
                 .content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
     }
+
+
 
     @Test
     void should_return_status_ok_when_update_rs_list() throws Exception {

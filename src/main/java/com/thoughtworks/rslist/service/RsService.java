@@ -4,13 +4,19 @@ import com.thoughtworks.rslist.dto.RsEventResponse;
 import com.thoughtworks.rslist.entity.RsEvent;
 import com.thoughtworks.rslist.entity.User;
 import com.thoughtworks.rslist.exception.BaseRsListException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.thoughtworks.rslist.service.UserService.userList;
+
 @Service
 public class RsService {
+
+    @Autowired
+    UserService userService;
 
     static List<RsEvent> tempRsList = initRsList();
 
@@ -50,10 +56,16 @@ public class RsService {
     }
 
     public RsEventResponse<RsEvent> createRsList(RsEvent rsEvent) {
-        tempRsList.add(rsEvent);
         RsEventResponse<RsEvent> rsListResponse = new RsEventResponse<>();
+        if (userService.verifyUserIsExited(rsEvent.getUser().getUserName())) {
+            tempRsList.add(rsEvent);
+            rsListResponse.setMessage("create rs list success!");
+        } else {
+            userList.add(rsEvent.getUser());
+            tempRsList.add(rsEvent);
+            rsListResponse.setMessage("create rs list and user success!");
+        }
         rsListResponse.setCode(201);
-        rsListResponse.setMessage("create rs list success!");
         rsListResponse.setData(rsEvent);
 
         return rsListResponse;

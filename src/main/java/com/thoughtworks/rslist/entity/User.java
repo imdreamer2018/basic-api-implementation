@@ -10,7 +10,7 @@ import javax.validation.constraints.*;
 public class User {
 
     @Size(max = 8)
-    @NotNull
+    @NotEmpty
     private String userName;
 
     @NotNull

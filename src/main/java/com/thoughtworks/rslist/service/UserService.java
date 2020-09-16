@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
 
-    static List<User> userList = initUser();
+    public static List<User> userList = initUser();
 
     private static List<User> initUser() {
         List<User> userList = new ArrayList<>();
@@ -36,7 +36,7 @@ public class UserService {
         return userResponse;
     }
 
-    private boolean verifyUserIsExited(String userName) {
+    public boolean verifyUserIsExited(String userName) {
         return userList.stream().anyMatch(user -> user.getUserName().equals(userName));
     }
 
