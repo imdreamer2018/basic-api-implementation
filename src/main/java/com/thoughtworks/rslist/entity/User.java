@@ -3,10 +3,7 @@ package com.thoughtworks.rslist.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Data
 @AllArgsConstructor
@@ -18,6 +15,7 @@ public class User {
 
     @NotNull
     @Min(18)
+    @Max(100)
     private Integer age;
 
     private String gender;

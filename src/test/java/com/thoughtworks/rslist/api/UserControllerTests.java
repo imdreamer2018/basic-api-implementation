@@ -82,4 +82,14 @@ public class UserControllerTests {
                 .andExpect(status().isBadRequest());
     }
 
+    @Test
+    void should_return_status_bad_request_when_register_user_of_age_more_than_100() throws Exception {
+        User user = new User("hhh",111,"male","qian.yang@twu.com","17607114747");
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(user);
+        mockMvc.perform(post("/users")
+                .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
 }
