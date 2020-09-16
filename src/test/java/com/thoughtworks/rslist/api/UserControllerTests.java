@@ -104,7 +104,17 @@ public class UserControllerTests {
 
     @Test
     void should_return_status_bad_request_when_register_user_of_email_is_invalid_input() throws Exception {
-        User user = new User("hhh",15,null,"1@twu.com","17607114747");
+        User user = new User("hhh",15,"male","@twu.com","17607114747");
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(user);
+        mockMvc.perform(post("/users")
+                .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void should_return_status_bad_request_when_register_user_of_phone_number_start_not_is_1() throws Exception {
+        User user = new User("hhh",15,"male","1@twu.com","27607114747");
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(user);
         mockMvc.perform(post("/users")
