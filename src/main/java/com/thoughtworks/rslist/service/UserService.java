@@ -35,10 +35,7 @@ public class UserService {
     }
 
     private boolean verifyUserIsExited(String userName) {
-        if (userList.stream().anyMatch(user -> user.getUserName().equals(userName))) {
-            return true;
-        }
-        return false;
+        return userList.stream().anyMatch(user -> user.getUserName().equals(userName));
     }
 
 }
