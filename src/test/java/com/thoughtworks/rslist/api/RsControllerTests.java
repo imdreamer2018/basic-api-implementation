@@ -1,8 +1,8 @@
 package com.thoughtworks.rslist.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.thoughtworks.rslist.entity.RsEvent;
-import com.thoughtworks.rslist.entity.User;
+import com.thoughtworks.rslist.dto.RsEventRequest;
+import com.thoughtworks.rslist.dto.UserRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -11,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -38,10 +37,10 @@ public class RsControllerTests {
 
     @Test
     void should_return_status_create_when_create_rs_list() throws Exception {
-        User user = new User("132",18,"male","qian.yang@twu.com","17607114747");
-        RsEvent rsEvent = new RsEvent("猪肉涨价啦","经济", user);
+        UserRequest userRequest = new UserRequest("132",18,"male","qian.yang@twu.com","17607114747");
+        RsEventRequest rsEventRequest = new RsEventRequest("猪肉涨价啦","经济", userRequest);
         ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(rsEvent);
+        String json = objectMapper.writeValueAsString(rsEventRequest);
         mockMvc.perform(post("/rs/lists")
                 .content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
@@ -51,10 +50,10 @@ public class RsControllerTests {
 
     @Test
     void should_return_status_ok_when_update_rs_list() throws Exception {
-        User user = new User("yangqian",18,"male","qian.yang@twu.com","17607114747");
-        RsEvent rsEvent = new RsEvent("猪肉涨价啦","经济", user);
+        UserRequest userRequest = new UserRequest("yangqian",18,"male","qian.yang@twu.com","17607114747");
+        RsEventRequest rsEventRequest = new RsEventRequest("猪肉涨价啦","经济", userRequest);
         ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(rsEvent);
+        String json = objectMapper.writeValueAsString(rsEventRequest);
         mockMvc.perform(put("/rs/lists/1")
                 .content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());

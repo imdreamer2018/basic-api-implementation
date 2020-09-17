@@ -1,4 +1,4 @@
-package com.thoughtworks.rslist.entity;
+package com.thoughtworks.rslist.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import javax.validation.constraints.*;
 
 @Data
 @AllArgsConstructor
-public class User {
+public class UserRequest {
 
     @Size(max = 8)
     @NotEmpty

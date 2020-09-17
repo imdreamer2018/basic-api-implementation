@@ -1,8 +1,8 @@
 package com.thoughtworks.rslist.service;
 
 import com.thoughtworks.rslist.dto.RsEventResponse;
-import com.thoughtworks.rslist.entity.RsEvent;
-import com.thoughtworks.rslist.entity.User;
+import com.thoughtworks.rslist.dto.RsEventRequest;
+import com.thoughtworks.rslist.dto.UserRequest;
 import com.thoughtworks.rslist.exception.BaseRsListException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.thoughtworks.rslist.service.UserService.userList;
+import static com.thoughtworks.rslist.service.UserService.userRequestList;
 
 @Service
 public class RsService {
@@ -19,20 +19,20 @@ public class RsService {
     @Autowired
     UserService userService;
 
-    static List<RsEvent> tempRsList = initRsList();
+    static List<RsEventRequest> tempRsList = initRsList();
 
-    private static List<RsEvent> initRsList() {
-        List<RsEvent> rsList = new ArrayList<>();
-        User user = new User("yangqian",18,"male","qian.yang@twu.com","17607114747");
-        rsList.add(new RsEvent("第一条事件","无分类", user));
-        rsList.add(new RsEvent("第二条事件","无分类", user));
-        rsList.add(new RsEvent("第三条事件","无分类", user));
+    private static List<RsEventRequest> initRsList() {
+        List<RsEventRequest> rsList = new ArrayList<>();
+        UserRequest userRequest = new UserRequest("yangqian",18,"male","qian.yang@twu.com","17607114747");
+        rsList.add(new RsEventRequest("第一条事件","无分类", userRequest));
+        rsList.add(new RsEventRequest("第二条事件","无分类", userRequest));
+        rsList.add(new RsEventRequest("第三条事件","无分类", userRequest));
         return rsList;
     }
 
 
-    public ResponseEntity<RsEventResponse<List<RsEvent>>> getRsList(Integer start, Integer end) {
-        RsEventResponse<List<RsEvent>> rsListResponse = new RsEventResponse<>();
+    public ResponseEntity<RsEventResponse<List<RsEventRequest>>> getRsList(Integer start, Integer end) {
+        RsEventResponse<List<RsEventRequest>> rsListResponse = new RsEventResponse<>();
         rsListResponse.setCode(200);
 
         if (start == null || end == null) {
@@ -46,9 +46,9 @@ public class RsService {
         return ResponseEntity.ok().body(rsListResponse);
     }
 
-    public RsEventResponse<RsEvent> getRsListByEventId(Integer eventId) {
+    public RsEventResponse<RsEventRequest> getRsListByEventId(Integer eventId) {
         verifyEventId(eventId);
-        RsEventResponse<RsEvent> reListResponse = new RsEventResponse<>();
+        RsEventResponse<RsEventRequest> reListResponse = new RsEventResponse<>();
         reListResponse.setCode(200);
         reListResponse.setMessage("get rs list by id success!");
         reListResponse.setData(tempRsList.get(eventId - 1));
@@ -56,18 +56,18 @@ public class RsService {
         return reListResponse;
     }
 
-    public ResponseEntity<RsEventResponse<RsEvent>> createRsList(RsEvent rsEvent) {
-        RsEventResponse<RsEvent> rsListResponse = new RsEventResponse<>();
-        if (userService.verifyUserIsExited(rsEvent.getUser().getUserName())) {
-            tempRsList.add(rsEvent);
+    public ResponseEntity<RsEventResponse<RsEventRequest>> createRsList(RsEventRequest rsEventRequest) {
+        RsEventResponse<RsEventRequest> rsListResponse = new RsEventResponse<>();
+        if (userService.verifyUserIsExited(rsEventRequest.getUserRequest().getUserName())) {
+            tempRsList.add(rsEventRequest);
             rsListResponse.setMessage("create rs list success!");
         } else {
-            userList.add(rsEvent.getUser());
-            tempRsList.add(rsEvent);
+            userRequestList.add(rsEventRequest.getUserRequest());
+            tempRsList.add(rsEventRequest);
             rsListResponse.setMessage("create rs list and user success!");
         }
         rsListResponse.setCode(201);
-        rsListResponse.setData(rsEvent);
+        rsListResponse.setData(rsEventRequest);
 
         return ResponseEntity
                 .created(null)
@@ -75,32 +75,32 @@ public class RsService {
                 .body(rsListResponse);
     }
 
-    public RsEventResponse<RsEvent> updateRsListByEventId(Integer eventId, RsEvent rsEvent) {
+    public RsEventResponse<RsEventRequest> updateRsListByEventId(Integer eventId, RsEventRequest rsEventRequest) {
         verifyEventId(eventId);
-        RsEvent currentRsEvent = tempRsList.get(eventId - 1);
-        currentRsEvent.setEventName(rsEvent.getEventName().isEmpty()?currentRsEvent.getEventName(): rsEvent.getEventName());
-        currentRsEvent.setKeyWord(rsEvent.getKeyWord().isEmpty()?currentRsEvent.getKeyWord(): rsEvent.getKeyWord());
+        RsEventRequest currentRsEventRequest = tempRsList.get(eventId - 1);
+        currentRsEventRequest.setEventName(rsEventRequest.getEventName().isEmpty()? currentRsEventRequest.getEventName(): rsEventRequest.getEventName());
+        currentRsEventRequest.setKeyWord(rsEventRequest.getKeyWord().isEmpty()? currentRsEventRequest.getKeyWord(): rsEventRequest.getKeyWord());
         tempRsList.remove(eventId - 1);
-        tempRsList.add(eventId - 1, currentRsEvent);
+        tempRsList.add(eventId - 1, currentRsEventRequest);
 
-        RsEventResponse<RsEvent> rsListResponse = new RsEventResponse<>();
+        RsEventResponse<RsEventRequest> rsListResponse = new RsEventResponse<>();
         rsListResponse.setCode(200);
         rsListResponse.setMessage("update rs list by event id success!");
-        rsListResponse.setData(rsEvent);
+        rsListResponse.setData(rsEventRequest);
 
         return rsListResponse;
 
     }
 
-    public RsEventResponse<RsEvent> deleteRsLIstByEventId(Integer eventId) {
+    public RsEventResponse<RsEventRequest> deleteRsLIstByEventId(Integer eventId) {
         verifyEventId(eventId);
-        RsEvent currentRsEvent = tempRsList.get(eventId - 1);
+        RsEventRequest currentRsEventRequest = tempRsList.get(eventId - 1);
         tempRsList.remove(eventId - 1);
 
-        RsEventResponse<RsEvent> rsListResponse = new RsEventResponse<>();
+        RsEventResponse<RsEventRequest> rsListResponse = new RsEventResponse<>();
         rsListResponse.setCode(200);
         rsListResponse.setMessage("delete rs list by event id success!");
-        rsListResponse.setData(currentRsEvent);
+        rsListResponse.setData(currentRsEventRequest);
 
         return rsListResponse;
     }

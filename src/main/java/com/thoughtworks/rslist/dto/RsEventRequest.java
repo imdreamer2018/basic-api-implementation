@@ -1,7 +1,8 @@
-package com.thoughtworks.rslist.entity;
+package com.thoughtworks.rslist.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.thoughtworks.rslist.dto.UserRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,22 +12,22 @@ import javax.validation.Valid;
 @Getter
 @Setter
 @AllArgsConstructor
-public class RsEvent {
+public class RsEventRequest {
 
     private String eventName;
 
     private String keyWord;
 
     @Valid
-    private User user;
+    private UserRequest userRequest;
 
     @JsonIgnore
-    public User getUser() {
-        return user;
+    public UserRequest getUserRequest() {
+        return userRequest;
     }
 
     @JsonProperty
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserRequest(UserRequest userRequest) {
+        this.userRequest = userRequest;
     }
 }

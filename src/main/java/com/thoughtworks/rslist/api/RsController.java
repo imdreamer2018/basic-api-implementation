@@ -1,7 +1,7 @@
 package com.thoughtworks.rslist.api;
 
 import com.thoughtworks.rslist.dto.RsEventResponse;
-import com.thoughtworks.rslist.entity.RsEvent;
+import com.thoughtworks.rslist.dto.RsEventRequest;
 import com.thoughtworks.rslist.service.RsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,26 +27,26 @@ public class RsController {
 
     @GetMapping("/lists/{eventId}")
     @ResponseBody
-    public RsEventResponse<RsEvent> getRsListByEventId(@PathVariable Integer eventId) {
+    public RsEventResponse<RsEventRequest> getRsListByEventId(@PathVariable Integer eventId) {
         return rsService.getRsListByEventId(eventId);
     }
 
     @PostMapping("/lists")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseEntity<RsEventResponse<RsEvent>> createRsList(@Validated @RequestBody RsEvent rsEvent) {
-        return rsService.createRsList(rsEvent);
+    public ResponseEntity<RsEventResponse<RsEventRequest>> createRsList(@Validated @RequestBody RsEventRequest rsEventRequest) {
+        return rsService.createRsList(rsEventRequest);
     }
 
     @PutMapping("/lists/{eventId}")
     @ResponseBody
-    public RsEventResponse<RsEvent> updateRsList(@PathVariable Integer eventId, @RequestBody RsEvent rsEvent) {
-        return rsService.updateRsListByEventId(eventId, rsEvent);
+    public RsEventResponse<RsEventRequest> updateRsList(@PathVariable Integer eventId, @RequestBody RsEventRequest rsEventRequest) {
+        return rsService.updateRsListByEventId(eventId, rsEventRequest);
     }
 
     @DeleteMapping("/lists/{eventId}")
     @ResponseBody
-    public RsEventResponse<RsEvent> deleleRsList(@PathVariable Integer eventId) {
+    public RsEventResponse<RsEventRequest> deleleRsList(@PathVariable Integer eventId) {
         return rsService.deleteRsLIstByEventId(eventId);
     }
 }

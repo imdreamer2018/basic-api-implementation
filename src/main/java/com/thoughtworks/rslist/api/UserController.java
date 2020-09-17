@@ -1,7 +1,7 @@
 package com.thoughtworks.rslist.api;
 
 import com.thoughtworks.rslist.dto.UserResponse;
-import com.thoughtworks.rslist.entity.User;
+import com.thoughtworks.rslist.dto.UserRequest;
 import com.thoughtworks.rslist.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,13 +18,13 @@ public class UserController {
 
     @PostMapping("users")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserResponse<User> registerUser(@Validated @RequestBody User user) {
-        return userService.registerUser(user);
+    public UserResponse<UserRequest> registerUser(@Validated @RequestBody UserRequest userRequest) {
+        return userService.registerUser(userRequest);
     }
 
     @GetMapping("users/{username}")
     @ResponseBody
-    public UserResponse<User> getUser(@PathVariable String username) {
+    public UserResponse<UserRequest> getUser(@PathVariable String username) {
         return userService.getUser(username);
     }
 
