@@ -1,4 +1,7 @@
 spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
   datasource:
     url: ${SPRING_MYSQL_URL:jdbc:mysql://127.0.0.1:3306/spring_test?characterEncoding=utf8&characterSetResults=utf8}
     username: ${SPRING_MYSQL_ROOT_USERNAME:root}
