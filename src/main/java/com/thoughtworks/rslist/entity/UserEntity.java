@@ -1,11 +1,16 @@
 package com.thoughtworks.rslist.entity;
 
+import lombok.Builder;
 import lombok.Data;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
+@Transactional
+@Builder
 @Table(name = "user")
 public class UserEntity {
 
@@ -24,5 +29,8 @@ public class UserEntity {
     private String email;
 
     private String phone;
+
+    @OneToMany(mappedBy = "user_id", cascade = CascadeType.REMOVE)
+    private List<RsEventEntity> rsEvents;
 
 }
