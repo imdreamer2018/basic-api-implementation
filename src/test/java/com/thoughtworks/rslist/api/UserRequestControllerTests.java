@@ -2,6 +2,10 @@ package com.thoughtworks.rslist.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.rslist.dto.UserRequest;
+import com.thoughtworks.rslist.repository.RsEventRepository;
+import com.thoughtworks.rslist.repository.UserRepository;
+import com.thoughtworks.rslist.service.UserService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -20,6 +24,17 @@ public class UserRequestControllerTests {
     @Autowired
     MockMvc mockMvc;
 
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    UserService userService;
+
+    @BeforeEach
+    void setUp() {
+        userRepository.deleteAll();
+    }
+
     @Test
     void should_return_status_create_when_create_user_success() throws Exception {
         UserRequest userRequest = new UserRequest("hello",18,"male","qian.yang@twu.com","17607114747");
@@ -37,7 +52,7 @@ public class UserRequestControllerTests {
         String json = objectMapper.writeValueAsString(userRequest);
         mockMvc.perform(post("/users")
                 .content(json).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 
     @Test
@@ -131,9 +146,22 @@ public class UserRequestControllerTests {
     }
 
     @Test
-    void should_return_status_ok_when_get_user_by_username_success() throws Exception {
-        mockMvc.perform(get("/users/yangqian"))
+    void should_return_status_ok_when_get_user_by_id_success() throws Exception {
+        userService.registerUser(UserRequest.builder()
+                .userName("yangqian")
+                .age(18)
+                .email("743295483@qq.com")
+                .gender("male")
+                .phone("17607114747")
+                .build());
+        mockMvc.perform(get("/users/1"))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void should_return_status_bad_request_when_get_user_by_id() throws Exception {
+        mockMvc.perform(get("/users/1"))
+                .andExpect(status().isBadRequest());
     }
 
     @Test

@@ -2,6 +2,7 @@ package com.thoughtworks.rslist.service;
 
 import com.thoughtworks.rslist.dto.UserResponse;
 import com.thoughtworks.rslist.dto.UserRequest;
+import com.thoughtworks.rslist.entity.UserEntity;
 import com.thoughtworks.rslist.exception.BaseUserException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,15 +39,15 @@ public class UserRequestServiceTests {
     }
 
     @Test
-    void should_return_user_info_when_get_user_by_username_success() {
-        UserResponse<UserRequest> userUserResponse = userService.getUser("yangqian");
-        assertEquals("get user info success!", userUserResponse.getMessage());
+    void should_return_user_info_when_get_user_by_id_success() {
+        ResponseEntity<UserResponse<UserEntity>> userUserResponse = userService.getUser(1);
+        assertEquals("get user info success!", Objects.requireNonNull(userUserResponse.getBody()).getMessage());
     }
 
     @Test
     void should_return_null_user_info_when_get_user_by_username() {
-        UserResponse<UserRequest> userUserResponse = userService.getUser("312312");
-        assertEquals("can not find this user!", userUserResponse.getMessage());
+        ResponseEntity<UserResponse<UserEntity>> userUserResponse = userService.getUser(1);
+        assertEquals("can not find this user!", Objects.requireNonNull(userUserResponse.getBody()).getMessage());
     }
 
     @Test

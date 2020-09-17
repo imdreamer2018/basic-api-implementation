@@ -55,23 +55,17 @@ public class UserService {
         return ResponseEntity.created(URI.create("/users")).body(userResponse);
     }
 
-    public boolean verifyUserIsExited(String userName) {
-        return userRequestList.stream().anyMatch(user -> user.getUserName().equals(userName));
-    }
 
-    public UserResponse<UserRequest> getUser(String username) {
-        UserResponse<UserRequest> userResponse = new UserResponse<>();
-        userResponse.setCode(200);
-        List<UserRequest> userRequestInfoList = userRequestList.stream()
-                .filter(user -> user.getUserName().equals(username))
-                .collect(Collectors.toList());
-        if (userRequestInfoList.isEmpty()) {
-            userResponse.setMessage("can not find this user!");
-            return userResponse;
+    public ResponseEntity<UserResponse<UserEntity>> getUser(Integer userId) {
+        Optional<UserEntity> user = userRepository.findById(userId);
+        if (!user.isPresent()) {
+            throw new BaseUserException("can not find this user!");
         }
+        UserResponse<UserEntity> userResponse = new UserResponse<>();
+        userResponse.setCode(200);
         userResponse.setMessage("get user info success!");
-        userResponse.setData(userRequestInfoList.get(0));
-        return userResponse;
+        userResponse.setData(user.get());
+        return ResponseEntity.ok(userResponse);
     }
 
     public ResponseEntity<UserResponse<List<UserRequest>>> getAllUser() {
