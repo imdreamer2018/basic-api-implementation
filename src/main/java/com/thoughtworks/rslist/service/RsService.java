@@ -3,7 +3,10 @@ package com.thoughtworks.rslist.service;
 import com.thoughtworks.rslist.dto.RsEventResponse;
 import com.thoughtworks.rslist.dto.RsEventRequest;
 import com.thoughtworks.rslist.dto.UserRequest;
+import com.thoughtworks.rslist.entity.RsEventEntity;
 import com.thoughtworks.rslist.exception.BaseRsListException;
+import com.thoughtworks.rslist.repository.RsEventRepository;
+import com.thoughtworks.rslist.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,9 @@ public class RsService {
     @Autowired
     UserService userService;
 
+    @Autowired
+    RsEventRepository rsEventRepository;
+
     static List<RsEventRequest> tempRsList = initRsList();
 
     private static List<RsEventRequest> initRsList() {
@@ -31,17 +37,18 @@ public class RsService {
     }
 
 
-    public ResponseEntity<RsEventResponse<List<RsEventRequest>>> getRsList(Integer start, Integer end) {
-        RsEventResponse<List<RsEventRequest>> rsListResponse = new RsEventResponse<>();
+    public ResponseEntity<RsEventResponse<List<RsEventEntity>>> getRsList(Integer start, Integer end) {
+        RsEventResponse<List<RsEventEntity>> rsListResponse = new RsEventResponse<>();
         rsListResponse.setCode(200);
+        List<RsEventEntity> eventEntityList = rsEventRepository.findAll();
 
         if (start == null || end == null) {
             rsListResponse.setMessage("get all rs list success!");
-            rsListResponse.setData(tempRsList);
+            rsListResponse.setData(eventEntityList);
         }else {
             verifyEventId(start, end);
             rsListResponse.setMessage("get rs list in range success!");
-            rsListResponse.setData(tempRsList.subList(start - 1, end));
+            rsListResponse.setData(eventEntityList.subList(start - 1, end));
         }
         return ResponseEntity.ok().body(rsListResponse);
     }

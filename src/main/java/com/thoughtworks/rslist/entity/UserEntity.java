@@ -1,7 +1,9 @@
 package com.thoughtworks.rslist.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
@@ -11,13 +13,15 @@ import java.util.List;
 @Data
 @Transactional
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "user")
 public class UserEntity {
 
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer userId;
+    private Integer id;
 
     @Column(name = "user_name")
     private String userName;
@@ -30,7 +34,7 @@ public class UserEntity {
 
     private String phone;
 
-    @OneToMany(mappedBy = "user_id", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<RsEventEntity> rsEvents;
 
 }

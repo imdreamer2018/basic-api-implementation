@@ -16,14 +16,14 @@ public class RsEventEntity {
     @Id
     @Column(name = "event_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer eventId;
+    private Integer id;
 
     private String eventName;
 
     private String keyWord;
 
     @ManyToOne()
-    @JoinColumn(name = "event_id")
-    private UserEntity userEntity;
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 
 }

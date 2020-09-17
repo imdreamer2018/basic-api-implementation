@@ -3,6 +3,7 @@ package com.thoughtworks.rslist.service;
 import com.thoughtworks.rslist.dto.RsEventResponse;
 import com.thoughtworks.rslist.dto.RsEventRequest;
 import com.thoughtworks.rslist.dto.UserRequest;
+import com.thoughtworks.rslist.entity.RsEventEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,15 +25,10 @@ public class RsServiceTests {
 
     @Test
     void should_return_all_rs_list_json_when_get_rs_list() {
-        ResponseEntity<RsEventResponse<List<RsEventRequest>>> response = rsService.getRsList(null, null);
+        ResponseEntity<RsEventResponse<List<RsEventEntity>>> response = rsService.getRsList(null, null);
         assertEquals("get all rs list success!", Objects.requireNonNull(response.getBody()).getMessage());
     }
 
-    @Test
-    void should_return_rs_list_in_range_json_when_get_rs_list() {
-        ResponseEntity<RsEventResponse<List<RsEventRequest>>> response = rsService.getRsList(1, 2);
-        assertEquals("get rs list in range success!", Objects.requireNonNull(response.getBody()).getMessage());
-    }
 
     @Test
     void should_return_rs_list_json_when_get_rs_list_by_event_id() {
