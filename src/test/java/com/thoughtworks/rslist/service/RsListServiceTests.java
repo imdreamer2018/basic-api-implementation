@@ -15,31 +15,37 @@ import java.util.Objects;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-public class RsServiceTests {
+public class RsListServiceTests {
 
 
     @Autowired
-    RsService rsService;
+    RsListService rsListService;
 
     UserRequest userRequest = new UserRequest("yangqian",18,"male","qian.yang@twu.com","17607114747");
 
     @Test
     void should_return_all_rs_list_json_when_get_rs_list() {
-        ResponseEntity<RsEventResponse<List<RsEventEntity>>> response = rsService.getRsList(null, null);
+        ResponseEntity<RsEventResponse<List<RsEventEntity>>> response = rsListService.getRsList(null, null);
         assertEquals("get all rs list success!", Objects.requireNonNull(response.getBody()).getMessage());
     }
 
 
     @Test
+    void should_return_rs_list_json_when_get_rs_list_by_event_id_can_not_found() {
+        ResponseEntity<RsEventResponse<RsEventEntity>> response = rsListService.getRsListByEventId(1);
+        assertEquals("can not found this rs event!", Objects.requireNonNull(response.getBody()).getMessage());
+    }
+
+    @Test
     void should_return_rs_list_json_when_get_rs_list_by_event_id() {
-        RsEventResponse<RsEventRequest> response = rsService.getRsListByEventId(1);
-        assertEquals("get rs list by id success!", response.getMessage());
+        ResponseEntity<RsEventResponse<RsEventEntity>> response = rsListService.getRsListByEventId(1);
+        assertEquals("get all rs list success!", Objects.requireNonNull(response.getBody()).getMessage());
     }
 
     @Test
     void should_return_rs_list_json_when_create_rs_list() {
         RsEventRequest rsEventRequest = new RsEventRequest("猪肉涨价啦","经济", userRequest);
-        ResponseEntity<RsEventResponse<RsEventRequest>> response = rsService.createRsList(rsEventRequest);
+        ResponseEntity<RsEventResponse<RsEventRequest>> response = rsListService.createRsList(rsEventRequest);
         assertEquals("create rs list success!", Objects.requireNonNull(response.getBody()).getMessage());
     }
 
@@ -47,20 +53,20 @@ public class RsServiceTests {
     void should_return_rs_list_json_when_create_rs_list_and_user_is_not_existed() {
         UserRequest userRequest = new UserRequest("21321312",18,"male","qian.yang@twu.com","17607114747");
         RsEventRequest rsEventRequest = new RsEventRequest("猪肉涨价啦","经济", userRequest);
-        ResponseEntity<RsEventResponse<RsEventRequest>> response = rsService.createRsList(rsEventRequest);
+        ResponseEntity<RsEventResponse<RsEventRequest>> response = rsListService.createRsList(rsEventRequest);
         assertEquals("create rs list and user success!", Objects.requireNonNull(response.getBody()).getMessage());
     }
 
     @Test
     void should_return_rs_list_json_when_update_rs_list_by_event_id() {
         RsEventRequest rsEventRequest = new RsEventRequest("猪肉涨价啦","经济", userRequest);
-        RsEventResponse<RsEventRequest> response = rsService.updateRsListByEventId(1, rsEventRequest);
+        RsEventResponse<RsEventRequest> response = rsListService.updateRsListByEventId(1, rsEventRequest);
         assertEquals("update rs list by event id success!", response.getMessage());
     }
 
     @Test
     void should_return_rs_list_json_when_delete_rs_list_by_event_id() {
-        RsEventResponse<RsEventRequest> response = rsService.deleteRsLIstByEventId(1);
+        RsEventResponse<RsEventRequest> response = rsListService.deleteRsLIstByEventId(1);
         assertEquals("delete rs list by event id success!", response.getMessage());
     }
 }

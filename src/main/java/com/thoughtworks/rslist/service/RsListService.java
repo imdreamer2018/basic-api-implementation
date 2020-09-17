@@ -13,11 +13,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.thoughtworks.rslist.service.UserService.userRequestList;
 
 @Service
-public class RsService {
+public class RsListService {
 
     @Autowired
     UserService userService;
@@ -53,14 +54,17 @@ public class RsService {
         return ResponseEntity.ok().body(rsListResponse);
     }
 
-    public RsEventResponse<RsEventRequest> getRsListByEventId(Integer eventId) {
-        verifyEventId(eventId);
-        RsEventResponse<RsEventRequest> reListResponse = new RsEventResponse<>();
-        reListResponse.setCode(200);
-        reListResponse.setMessage("get rs list by id success!");
-        reListResponse.setData(tempRsList.get(eventId - 1));
-
-        return reListResponse;
+    public ResponseEntity<RsEventResponse<RsEventEntity>> getRsListByEventId(Integer eventId) {
+        RsEventResponse<RsEventEntity> reListResponse = new RsEventResponse<>();
+        Optional<RsEventEntity> eventEntity = rsEventRepository.findById(eventId);
+        if (!eventEntity.isPresent()) {
+            reListResponse.setCode(200);
+            reListResponse.setMessage("can not found this rs event!");
+        } else {
+            reListResponse.setMessage("get rs list by id success!");
+            reListResponse.setData(eventEntity.get());
+        }
+        return ResponseEntity.ok().body(reListResponse);
     }
 
     public ResponseEntity<RsEventResponse<RsEventRequest>> createRsList(RsEventRequest rsEventRequest) {
