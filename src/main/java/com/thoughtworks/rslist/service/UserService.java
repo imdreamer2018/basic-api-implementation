@@ -68,12 +68,26 @@ public class UserService {
         return ResponseEntity.ok(userResponse);
     }
 
-    public ResponseEntity<UserResponse<List<UserRequest>>> getAllUser() {
-        UserResponse<List<UserRequest>> userResponse = new UserResponse<>();
+    public ResponseEntity<UserResponse<List<UserEntity>>> getAllUser() {
+        List<UserEntity> allUsers = userRepository.findAll();
+        UserResponse<List<UserEntity>> userResponse = new UserResponse<>();
         userResponse.setCode(200);
         userResponse.setMessage("get all user info success!");
-        userResponse.setData(userRequestList);
+        userResponse.setData(allUsers);
 
         return ResponseEntity.ok().body(userResponse);
+    }
+
+    public ResponseEntity<UserResponse<UserEntity>> deleteUserById(Integer userId) {
+        Optional<UserEntity> user = userRepository.findById(userId);
+        UserResponse<UserEntity> userResponse = new UserResponse<>();
+        if (!user.isPresent()) {
+            throw new BaseUserException("the user is not existed!");
+        }
+        userRepository.deleteById(userId);
+        userResponse.setCode(200);
+        userResponse.setMessage("delete user success!");
+        userResponse.setData(user.get());
+        return ResponseEntity.ok(userResponse);
     }
 }

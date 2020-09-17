@@ -13,8 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -168,5 +167,24 @@ public class UserRequestControllerTests {
     void should_return_status_ok_when_get_user_success() throws Exception {
         mockMvc.perform(get("/users"))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void should_return_status_ok_when_delete_user_success() throws Exception {
+        userService.registerUser(UserRequest.builder()
+                .userName("yangqian")
+                .age(18)
+                .email("743295483@qq.com")
+                .gender("male")
+                .phone("17607114747")
+                .build());
+        mockMvc.perform(delete("/users/1"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void should_return_status_bad_request_when_delete_user_is_not_existed() throws Exception {
+        mockMvc.perform(delete("/users/1"))
+                .andExpect(status().isBadRequest());
     }
 }

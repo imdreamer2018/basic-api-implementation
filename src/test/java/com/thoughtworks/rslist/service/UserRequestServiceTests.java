@@ -52,7 +52,28 @@ public class UserRequestServiceTests {
 
     @Test
     void should_return_all_users_info_when_get_users() {
-        ResponseEntity<UserResponse<List<UserRequest>>> response = userService.getAllUser();
+        ResponseEntity<UserResponse<List<UserEntity>>> response = userService.getAllUser();
         assertEquals("get all user info success!", Objects.requireNonNull(response.getBody()).getMessage());
+    }
+
+    @Test
+    void should_return_user_response_when_delete_user() {
+        userService.registerUser(UserRequest.builder()
+                .userName("yangqian")
+                .age(18)
+                .email("743295483@qq.com")
+                .gender("male")
+                .phone("17607114747")
+                .build());
+        ResponseEntity<UserResponse<UserEntity>> userResponseResponseEntity = userService.deleteUserById(1);
+        assertEquals("delete user success!", Objects.requireNonNull(userResponseResponseEntity.getBody()).getMessage());
+    }
+
+    @Test
+    void should_return_exception_when_delete_user_is_not_existed() {
+        BaseUserException baseUserException = assertThrows(BaseUserException.class, () -> userService.deleteUserById(1));
+        assertEquals("the user is not existed!", baseUserException.getMessage());
+
+
     }
 }
