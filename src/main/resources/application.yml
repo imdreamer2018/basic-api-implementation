@@ -1,1 +1,6 @@
-
+spring:
+  datasource:
+    url: ${SPRING_MYSQL_URL:jdbc:mysql://127.0.0.1:3306/spring_test?characterEncoding=utf8&characterSetResults=utf8}
+    username: ${SPRING_MYSQL_ROOT_USERNAME:root}
+    password: ${SPRING_MYSQL_ROOT_PASSWORD:yq1996052468}
+    driver-class-name: com.mysql.jdbc.Driver

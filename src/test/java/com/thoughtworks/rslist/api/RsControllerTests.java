@@ -1,0 +1,71 @@
+package com.thoughtworks.rslist.api;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.thoughtworks.rslist.entity.RsEvent;
+import com.thoughtworks.rslist.entity.User;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+public class RsControllerTests {
+
+    @Autowired
+    MockMvc mockMvc;
+
+    @Test
+    void should_return_status_ok_when_get_rs_list() throws Exception {
+        mockMvc.perform(get("/rs/lists"))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get("/rs/lists?start=1&end=2"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void should_return_status_ok_when_get_rs_list_by_event_id() throws Exception {
+        mockMvc.perform(get("/rs/lists/1"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void should_return_status_create_when_create_rs_list() throws Exception {
+        User user = new User("132",18,"male","qian.yang@twu.com","17607114747");
+        RsEvent rsEvent = new RsEvent("猪肉涨价啦","经济", user);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(rsEvent);
+        mockMvc.perform(post("/rs/lists")
+                .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated());
+    }
+
+
+
+    @Test
+    void should_return_status_ok_when_update_rs_list() throws Exception {
+        User user = new User("yangqian",18,"male","qian.yang@twu.com","17607114747");
+        RsEvent rsEvent = new RsEvent("猪肉涨价啦","经济", user);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(rsEvent);
+        mockMvc.perform(put("/rs/lists/1")
+                .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void should_return_status_ok_when_delete_rs_list() throws Exception {
+        mockMvc.perform(delete("/rs/lists/1"))
+                .andExpect(status().isOk());
+    }
+
+
+
+}
