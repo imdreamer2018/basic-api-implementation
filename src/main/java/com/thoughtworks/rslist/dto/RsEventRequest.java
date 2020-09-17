@@ -8,11 +8,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.Valid;
+import java.io.Serializable;
 
 @Getter
 @Setter
 @AllArgsConstructor
-public class RsEventRequest {
+public class RsEventRequest implements Serializable {
 
     private String eventName;
 

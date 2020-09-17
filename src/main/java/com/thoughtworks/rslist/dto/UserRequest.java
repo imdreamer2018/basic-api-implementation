@@ -5,10 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.validation.constraints.*;
+import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
-public class UserRequest {
+public class UserRequest implements Serializable {
 
     @Size(max = 8)
     @NotEmpty

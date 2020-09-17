@@ -21,7 +21,7 @@ public class RsController {
     @ResponseStatus()
     @ResponseBody
     public ResponseEntity getRsList(@RequestParam(required = false) Integer start,
-                                                                    @RequestParam(required = false) Integer end) {
+                                    @RequestParam(required = false) Integer end) {
         return rsService.getRsList(start, end);
     }
 
