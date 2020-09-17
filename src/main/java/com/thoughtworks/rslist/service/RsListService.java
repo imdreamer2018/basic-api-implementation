@@ -88,7 +88,7 @@ public class RsListService {
 
         Optional<RsEventEntity> rsEvent = rsEventRepository.findById(eventId);
         if (!rsEvent.isPresent()) {
-            throw new BaseRsListException("can not found this event");
+            throw new BaseRsListException("can not found this event!");
         }
         if (!rsEvent.get().getId().equals(rsEventRequest.getUserId())) {
             throw new UnAuthenticatedException("FORBIDDEN");

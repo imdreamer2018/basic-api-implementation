@@ -3,10 +3,13 @@ package com.thoughtworks.rslist.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.rslist.dto.RsEventRequest;
 import com.thoughtworks.rslist.dto.UserRequest;
+import com.thoughtworks.rslist.entity.RsEventEntity;
+import com.thoughtworks.rslist.entity.UserEntity;
 import com.thoughtworks.rslist.repository.RsEventRepository;
 import com.thoughtworks.rslist.repository.UserRepository;
 import com.thoughtworks.rslist.service.RsListService;
 import com.thoughtworks.rslist.service.UserService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +37,29 @@ public class RsControllerTests {
     @Autowired
     UserRepository userRepository;
 
+
+
     @BeforeEach
     void setUp() {
+        UserEntity userEntity = UserEntity.builder()
+                .userName("yangqian")
+                .age(18)
+                .gender("male")
+                .email("yq@twu.com")
+                .phone("17607114747")
+                .build();
+        userRepository.save(userEntity);
+
+        RsEventEntity rsEventEntity = RsEventEntity.builder()
+                .eventName("猪肉涨价啦")
+                .keyWord("经济")
+                .user(userEntity)
+                .build();
+        rsEventRepository.save(rsEventEntity);
+    }
+
+    @AfterEach
+    void endUp() {
         rsEventRepository.deleteAll();
         userRepository.deleteAll();
     }
@@ -85,8 +109,11 @@ public class RsControllerTests {
 
     @Test
     void should_return_status_ok_when_update_rs_list() throws Exception {
-        UserRequest userRequest = new UserRequest("yangqian",18,"male","qian.yang@twu.com","17607114747");
-        RsEventRequest rsEventRequest = new RsEventRequest("猪肉涨价啦","经济", 1);
+        RsEventRequest rsEventRequest = RsEventRequest.builder()
+                .eventName("猪肉涨价啦")
+                .keyWord("hhh")
+                .userId(1)
+                .build();
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(rsEventRequest);
         mockMvc.perform(put("/rs/lists/1")
