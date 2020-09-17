@@ -2,6 +2,7 @@ package com.thoughtworks.rslist.api;
 
 import com.thoughtworks.rslist.dto.RsEventResponse;
 import com.thoughtworks.rslist.dto.RsEventRequest;
+import com.thoughtworks.rslist.entity.RsEventEntity;
 import com.thoughtworks.rslist.service.RsListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,7 +41,7 @@ public class RsController {
 
     @PutMapping("/lists/{eventId}")
     @ResponseBody
-    public RsEventResponse updateRsList(@PathVariable Integer eventId, @RequestBody RsEventRequest rsEventRequest) {
+    public ResponseEntity<RsEventResponse<RsEventEntity>> updateRsList(@PathVariable Integer eventId, @RequestBody RsEventRequest rsEventRequest) {
         return rsListService.updateRsListByEventId(eventId, rsEventRequest);
     }
 

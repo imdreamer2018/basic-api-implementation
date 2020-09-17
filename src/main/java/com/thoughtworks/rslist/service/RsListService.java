@@ -84,7 +84,7 @@ public class RsListService {
                 .body(rsListResponse);
     }
 
-    public RsEventResponse<RsEventEntity> updateRsListByEventId(Integer eventId, RsEventRequest rsEventRequest) {
+    public ResponseEntity<RsEventResponse<RsEventEntity>> updateRsListByEventId(Integer eventId, RsEventRequest rsEventRequest) {
 
         Optional<RsEventEntity> rsEvent = rsEventRepository.findById(eventId);
         if (!rsEvent.isPresent()) {
@@ -102,7 +102,8 @@ public class RsListService {
             rsEvent.get().setKeyWord(rsEventRequest.getKeyWord());
         rsListResponse.setData(rsEvent.get());
 
-        return rsListResponse;
+        return ResponseEntity
+                .ok(rsListResponse);
 
     }
 

@@ -93,9 +93,10 @@ public class RsListServiceTests {
                 .keyWord("hhh")
                 .userId(1)
                 .build();
-        RsEventResponse<RsEventEntity> response = rsListService.updateRsListByEventId(1, rsEventRequest);
-        assertEquals("update rs list by event id success!", response.getMessage());
-        assertEquals("hhh", response.getData().getKeyWord());
+        ResponseEntity<RsEventResponse<RsEventEntity>> response = rsListService.updateRsListByEventId(1, rsEventRequest);
+        assertEquals("update rs list by event id success!", Objects.requireNonNull(response.getBody()).getMessage());
+        assertEquals("hhh", response.getBody().getData().getKeyWord());
+        assertEquals(200, response.getStatusCodeValue());
     }
 
     @Test
