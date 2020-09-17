@@ -70,6 +70,17 @@ public class RsControllerTests {
                 .andExpect(status().isCreated());
     }
 
+    @Test
+    void should_return_bad_request_when_create_rs_list_user_is_not_existed() throws Exception {
+
+        RsEventRequest rsEventRequest = new RsEventRequest("猪肉涨价啦","经济", 1);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(rsEventRequest);
+        mockMvc.perform(post("/rs/lists")
+                .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
 
 
     @Test

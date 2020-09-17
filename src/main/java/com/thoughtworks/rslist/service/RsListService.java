@@ -6,6 +6,7 @@ import com.thoughtworks.rslist.dto.UserRequest;
 import com.thoughtworks.rslist.entity.RsEventEntity;
 import com.thoughtworks.rslist.entity.UserEntity;
 import com.thoughtworks.rslist.exception.BaseRsListException;
+import com.thoughtworks.rslist.exception.UnAuthenticatedException;
 import com.thoughtworks.rslist.repository.RsEventRepository;
 import com.thoughtworks.rslist.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +76,7 @@ public class RsListService {
                 .build());
 
         rsListResponse.setCode(201);
-        rsListResponse.setMessage("create rs list and user success!");
+        rsListResponse.setMessage("create rs list success!");
         rsListResponse.setData(rsEventRequest);
 
         return ResponseEntity
@@ -83,18 +84,23 @@ public class RsListService {
                 .body(rsListResponse);
     }
 
-    public RsEventResponse<RsEventRequest> updateRsListByEventId(Integer eventId, RsEventRequest rsEventRequest) {
+    public RsEventResponse<RsEventEntity> updateRsListByEventId(Integer eventId, RsEventRequest rsEventRequest) {
 
-        RsEventRequest currentRsEventRequest = tempRsList.get(eventId - 1);
-        currentRsEventRequest.setEventName(rsEventRequest.getEventName().isEmpty()? currentRsEventRequest.getEventName(): rsEventRequest.getEventName());
-        currentRsEventRequest.setKeyWord(rsEventRequest.getKeyWord().isEmpty()? currentRsEventRequest.getKeyWord(): rsEventRequest.getKeyWord());
-        tempRsList.remove(eventId - 1);
-        tempRsList.add(eventId - 1, currentRsEventRequest);
-
-        RsEventResponse<RsEventRequest> rsListResponse = new RsEventResponse<>();
+        Optional<RsEventEntity> rsEvent = rsEventRepository.findById(eventId);
+        if (!rsEvent.isPresent()) {
+            throw new BaseRsListException("can not found this event");
+        }
+        if (!rsEvent.get().getId().equals(rsEventRequest.getUserId())) {
+            throw new UnAuthenticatedException("FORBIDDEN");
+        }
+        RsEventResponse<RsEventEntity> rsListResponse = new RsEventResponse<>();
         rsListResponse.setCode(200);
         rsListResponse.setMessage("update rs list by event id success!");
-        rsListResponse.setData(rsEventRequest);
+        if (!rsEventRequest.getEventName().isEmpty())
+            rsEvent.get().setEventName(rsEventRequest.getEventName());
+        if (!rsEventRequest.getKeyWord().isEmpty())
+            rsEvent.get().setKeyWord(rsEventRequest.getKeyWord());
+        rsListResponse.setData(rsEvent.get());
 
         return rsListResponse;
 

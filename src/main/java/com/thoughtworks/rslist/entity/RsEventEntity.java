@@ -1,7 +1,9 @@
 package com.thoughtworks.rslist.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
@@ -11,6 +13,8 @@ import javax.persistence.*;
 @Transactional
 @Builder
 @Table(name = "rs_event")
+@AllArgsConstructor
+@NoArgsConstructor
 public class RsEventEntity {
 
     @Id

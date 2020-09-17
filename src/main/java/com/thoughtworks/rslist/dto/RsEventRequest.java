@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Getter
@@ -21,5 +22,6 @@ public class RsEventRequest {
 
     private String keyWord;
 
+    @NotNull
     private Integer userId;
 }

@@ -40,7 +40,7 @@ public class RsController {
 
     @PutMapping("/lists/{eventId}")
     @ResponseBody
-    public RsEventResponse<RsEventRequest> updateRsList(@PathVariable Integer eventId, @RequestBody RsEventRequest rsEventRequest) {
+    public RsEventResponse updateRsList(@PathVariable Integer eventId, @RequestBody RsEventRequest rsEventRequest) {
         return rsListService.updateRsListByEventId(eventId, rsEventRequest);
     }
 
