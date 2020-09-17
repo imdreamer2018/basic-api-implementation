@@ -1,1 +1,13 @@
-
+spring:
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: create
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/spring_test?characterEncoding=utf8&characterSetResults=utf8
+    username: root
+    password: yq1996052468
+    driver-class-name: com.mysql.cj.jdbc.Driver
