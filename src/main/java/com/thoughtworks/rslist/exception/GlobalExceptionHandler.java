@@ -49,4 +49,14 @@ public class GlobalExceptionHandler {
         return r;
     }
 
+    @ExceptionHandler(value = UnAuthenticatedException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorDTO UnAuthenticatedExceptionHandler(HttpServletRequest req, UnAuthenticatedException e) {
+        ErrorDTO r = new ErrorDTO();
+        r.setMessage(e.getMessage());
+        r.setCode(403);
+        return r;
+    }
+
 }
