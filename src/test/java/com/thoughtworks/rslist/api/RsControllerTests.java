@@ -58,7 +58,8 @@ public class RsControllerTests {
     @Test
     void should_return_status_create_when_create_rs_list() throws Exception {
         UserRequest userRequest = new UserRequest("yangqian",18,"male","qian.yang@twu.com","17607114747");
-        RsEventRequest rsEventRequest = new RsEventRequest("猪肉涨价啦","经济", userRequest);
+
+        RsEventRequest rsEventRequest = new RsEventRequest("猪肉涨价啦","经济", 1);
 
         userService.registerUser(userRequest);
 
@@ -74,7 +75,7 @@ public class RsControllerTests {
     @Test
     void should_return_status_ok_when_update_rs_list() throws Exception {
         UserRequest userRequest = new UserRequest("yangqian",18,"male","qian.yang@twu.com","17607114747");
-        RsEventRequest rsEventRequest = new RsEventRequest("猪肉涨价啦","经济", userRequest);
+        RsEventRequest rsEventRequest = new RsEventRequest("猪肉涨价啦","经济", 1);
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(rsEventRequest);
         mockMvc.perform(put("/rs/lists/1")

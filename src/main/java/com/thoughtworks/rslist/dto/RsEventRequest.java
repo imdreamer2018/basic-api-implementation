@@ -21,16 +21,5 @@ public class RsEventRequest {
 
     private String keyWord;
 
-    @Valid
-    private UserRequest userRequest;
-
-    @JsonIgnore
-    public UserRequest getUserRequest() {
-        return userRequest;
-    }
-
-    @JsonProperty
-    public void setUserRequest(UserRequest userRequest) {
-        this.userRequest = userRequest;
-    }
+    private Integer userId;
 }

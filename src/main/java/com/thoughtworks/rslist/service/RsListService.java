@@ -30,17 +30,8 @@ public class RsListService {
 
     @Autowired
     UserRepository userRepository;
+    static List<RsEventRequest> tempRsList = new ArrayList<>();
 
-    static List<RsEventRequest> tempRsList = initRsList();
-
-    private static List<RsEventRequest> initRsList() {
-        List<RsEventRequest> rsList = new ArrayList<>();
-        UserRequest userRequest = new UserRequest("yangqian",18,"male","qian.yang@twu.com","17607114747");
-        rsList.add(new RsEventRequest("第一条事件","无分类", userRequest));
-        rsList.add(new RsEventRequest("第二条事件","无分类", userRequest));
-        rsList.add(new RsEventRequest("第三条事件","无分类", userRequest));
-        return rsList;
-    }
 
 
     public ResponseEntity<RsEventResponse<List<RsEventEntity>>> getRsList(Integer start, Integer end) {
@@ -73,7 +64,7 @@ public class RsListService {
 
     public ResponseEntity<RsEventResponse<RsEventRequest>> createRsList(RsEventRequest rsEventRequest) {
         RsEventResponse<RsEventRequest> rsListResponse = new RsEventResponse<>();
-        Optional<UserEntity> user = userRepository.findByUserName(rsEventRequest.getUserRequest().getUserName());
+        Optional<UserEntity> user = userRepository.findById(rsEventRequest.getUserId());
         if (!user.isPresent()) {
             throw new BaseRsListException("user is not existed!");
         }

@@ -44,7 +44,7 @@ public class RsListServiceTests {
 
     @Test
     void should_return_rs_list_json_when_create_rs_list() {
-        RsEventRequest rsEventRequest = new RsEventRequest("猪肉涨价啦","经济", userRequest);
+        RsEventRequest rsEventRequest = new RsEventRequest("猪肉涨价啦","经济", 1);
         ResponseEntity<RsEventResponse<RsEventRequest>> response = rsListService.createRsList(rsEventRequest);
         assertEquals("create rs list success!", Objects.requireNonNull(response.getBody()).getMessage());
     }
@@ -52,14 +52,14 @@ public class RsListServiceTests {
     @Test
     void should_return_rs_list_json_when_create_rs_list_and_user_is_not_existed() {
         UserRequest userRequest = new UserRequest("21321312",18,"male","qian.yang@twu.com","17607114747");
-        RsEventRequest rsEventRequest = new RsEventRequest("猪肉涨价啦","经济", userRequest);
+        RsEventRequest rsEventRequest = new RsEventRequest("猪肉涨价啦","经济", 1);
         ResponseEntity<RsEventResponse<RsEventRequest>> response = rsListService.createRsList(rsEventRequest);
         assertEquals("create rs list and user success!", Objects.requireNonNull(response.getBody()).getMessage());
     }
 
     @Test
     void should_return_rs_list_json_when_update_rs_list_by_event_id() {
-        RsEventRequest rsEventRequest = new RsEventRequest("猪肉涨价啦","经济", userRequest);
+        RsEventRequest rsEventRequest = new RsEventRequest("猪肉涨价啦","经济", 1);
         RsEventResponse<RsEventRequest> response = rsListService.updateRsListByEventId(1, rsEventRequest);
         assertEquals("update rs list by event id success!", response.getMessage());
     }
