@@ -2,12 +2,14 @@ package com.thoughtworks.rslist.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
 
 @Data
+@Builder
 @AllArgsConstructor
 public class UserRequest implements Serializable {
 

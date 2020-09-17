@@ -25,9 +25,9 @@ public class UserRequestServiceTests {
 
     @Test
     void should_return_user_info_when_create_user_success() {
-        UserRequest userRequest = new UserRequest("yangqian1",18,"male","qian.yang@twu.com","17607114747");
-        UserResponse<UserRequest> response = userService.registerUser(userRequest);
-        assertEquals("register user success!", response.getMessage());
+        UserRequest userRequest = new UserRequest("yangqian",18,"male","qian.yang@twu.com","17607114747");
+        ResponseEntity<UserResponse<UserRequest>> response = userService.registerUser(userRequest);
+        assertEquals("register user success!", Objects.requireNonNull(response.getBody()).getMessage());
     }
 
     @Test

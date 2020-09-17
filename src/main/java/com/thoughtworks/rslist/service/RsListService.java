@@ -4,6 +4,7 @@ import com.thoughtworks.rslist.dto.RsEventResponse;
 import com.thoughtworks.rslist.dto.RsEventRequest;
 import com.thoughtworks.rslist.dto.UserRequest;
 import com.thoughtworks.rslist.entity.RsEventEntity;
+import com.thoughtworks.rslist.entity.UserEntity;
 import com.thoughtworks.rslist.exception.BaseRsListException;
 import com.thoughtworks.rslist.repository.RsEventRepository;
 import com.thoughtworks.rslist.repository.UserRepository;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +27,9 @@ public class RsListService {
 
     @Autowired
     RsEventRepository rsEventRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     static List<RsEventRequest> tempRsList = initRsList();
 
@@ -58,31 +63,33 @@ public class RsListService {
         RsEventResponse<RsEventEntity> reListResponse = new RsEventResponse<>();
         Optional<RsEventEntity> eventEntity = rsEventRepository.findById(eventId);
         if (!eventEntity.isPresent()) {
-            reListResponse.setCode(200);
-            reListResponse.setMessage("can not found this rs event!");
-        } else {
-            reListResponse.setMessage("get rs list by id success!");
-            reListResponse.setData(eventEntity.get());
+            throw new BaseRsListException("invalid id");
         }
+        reListResponse.setMessage("get rs list by id success!");
+        reListResponse.setData(eventEntity.get());
+
         return ResponseEntity.ok().body(reListResponse);
     }
 
     public ResponseEntity<RsEventResponse<RsEventRequest>> createRsList(RsEventRequest rsEventRequest) {
         RsEventResponse<RsEventRequest> rsListResponse = new RsEventResponse<>();
-        if (userService.verifyUserIsExited(rsEventRequest.getUserRequest().getUserName())) {
-            tempRsList.add(rsEventRequest);
-            rsListResponse.setMessage("create rs list success!");
-        } else {
-            userRequestList.add(rsEventRequest.getUserRequest());
-            tempRsList.add(rsEventRequest);
-            rsListResponse.setMessage("create rs list and user success!");
+        Optional<UserEntity> user = userRepository.findByUserName(rsEventRequest.getUserRequest().getUserName());
+        if (!user.isPresent()) {
+            throw new BaseRsListException("user is not existed!");
         }
+
+        rsEventRepository.save(RsEventEntity.builder()
+                .eventName(rsEventRequest.getEventName())
+                .keyWord(rsEventRequest.getKeyWord())
+                .user(user.get())
+                .build());
+
         rsListResponse.setCode(201);
+        rsListResponse.setMessage("create rs list and user success!");
         rsListResponse.setData(rsEventRequest);
 
         return ResponseEntity
-                .created(null)
-                .header("index", String.valueOf(tempRsList.size()))
+                .created(URI.create("/rs/lists"))
                 .body(rsListResponse);
     }
 

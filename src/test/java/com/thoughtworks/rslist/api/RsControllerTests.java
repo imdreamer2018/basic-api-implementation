@@ -3,6 +3,9 @@ package com.thoughtworks.rslist.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.rslist.dto.RsEventRequest;
 import com.thoughtworks.rslist.dto.UserRequest;
+import com.thoughtworks.rslist.repository.RsEventRepository;
+import com.thoughtworks.rslist.service.RsListService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -19,6 +22,14 @@ public class RsControllerTests {
 
     @Autowired
     MockMvc mockMvc;
+
+    @Autowired
+    RsEventRepository rsEventRepository;
+
+    @BeforeEach
+    void setUp() {
+        rsEventRepository.deleteAll();
+    }
 
     @Test
     void should_return_status_ok_when_get_rs_list() throws Exception {
@@ -37,8 +48,18 @@ public class RsControllerTests {
 
     @Test
     void should_return_status_create_when_create_rs_list() throws Exception {
-        UserRequest userRequest = new UserRequest("132",18,"male","qian.yang@twu.com","17607114747");
-        RsEventRequest rsEventRequest = new RsEventRequest("猪肉涨价啦","经济", userRequest);
+        UserRequest userRequest = UserRequest.builder()
+                .userName("123")
+                .age(18)
+                .gender("male")
+                .email("qian.yang@twu.com")
+                .phone("17607114747")
+                .build();
+        RsEventRequest rsEventRequest = RsEventRequest.builder()
+                .eventName("猪肉涨价啦")
+                .keyWord("经济")
+                .userRequest(userRequest)
+                .build();
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(rsEventRequest);
         mockMvc.perform(post("/rs/lists")
