@@ -65,20 +65,20 @@ public class RsListServiceTests {
 
     @Test
     void should_return_all_rs_list_json_when_get_rs_list() {
-        ResponseEntity<RsEventResponse<List<RsEventEntity>>> response = rsListService.getRsList(null, null);
+        ResponseEntity<RsEventResponse<List<RsEventRequest>>> response = rsListService.getRsList(null, null);
         assertEquals("get all rs list success!", Objects.requireNonNull(response.getBody()).getMessage());
     }
 
 
     @Test
     void should_return_rs_list_json_when_get_rs_list_by_event_id_can_not_found() {
-        ResponseEntity<RsEventResponse<RsEventEntity>> response = rsListService.getRsListByEventId(1);
+        ResponseEntity<RsEventResponse<RsEventRequest>> response = rsListService.getRsListByEventId(1);
         assertEquals("can not found this rs event!", Objects.requireNonNull(response.getBody()).getMessage());
     }
 
     @Test
     void should_return_rs_list_json_when_get_rs_list_by_event_id() {
-        ResponseEntity<RsEventResponse<RsEventEntity>> response = rsListService.getRsListByEventId(1);
+        ResponseEntity<RsEventResponse<RsEventRequest>> response = rsListService.getRsListByEventId(1);
         assertEquals("get all rs list success!", Objects.requireNonNull(response.getBody()).getMessage());
     }
 
@@ -103,7 +103,7 @@ public class RsListServiceTests {
                 .keyWord("hhh")
                 .userId(1)
                 .build();
-        ResponseEntity<RsEventResponse<RsEventEntity>> response = rsListService.updateRsListByEventId(1, rsEventRequest);
+        ResponseEntity<RsEventResponse<RsEventRequest>> response = rsListService.updateRsListByEventId(1, rsEventRequest);
         assertEquals("update rs list by event id success!", Objects.requireNonNull(response.getBody()).getMessage());
         assertEquals("hhh", response.getBody().getData().getKeyWord());
         assertEquals(200, response.getStatusCodeValue());
@@ -135,7 +135,7 @@ public class RsListServiceTests {
 
     @Test
     void should_return_rs_list_json_when_delete_rs_list_by_event_id() {
-        RsEventResponse<RsEventRequest> response = rsListService.deleteRsLIstByEventId(1);
-        assertEquals("delete rs list by event id success!", response.getMessage());
+        ResponseEntity<RsEventResponse<RsEventRequest>> response = rsListService.deleteRsLIstByEventId(1);
+        assertEquals("delete rs list by event id success!", Objects.requireNonNull(response.getBody()).getMessage());
     }
 }

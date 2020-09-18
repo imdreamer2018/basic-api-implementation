@@ -50,19 +50,19 @@ public class UserRequestServiceTests {
 
     @Test
     void should_return_user_info_when_get_user_by_id_success() {
-        ResponseEntity<UserResponse<UserEntity>> userUserResponse = userService.getUser(1);
+        ResponseEntity<UserResponse<UserRequest>> userUserResponse = userService.getUser(1);
         assertEquals("get user info success!", Objects.requireNonNull(userUserResponse.getBody()).getMessage());
     }
 
     @Test
     void should_return_null_user_info_when_get_user_by_username() {
-        ResponseEntity<UserResponse<UserEntity>> userUserResponse = userService.getUser(1);
+        ResponseEntity<UserResponse<UserRequest>> userUserResponse = userService.getUser(1);
         assertEquals("can not find this user!", Objects.requireNonNull(userUserResponse.getBody()).getMessage());
     }
 
     @Test
     void should_return_all_users_info_when_get_users() {
-        ResponseEntity<UserResponse<List<UserEntity>>> response = userService.getAllUser();
+        ResponseEntity<UserResponse<List<UserRequest>>> response = userService.getAllUser();
         assertEquals("get all user info success!", Objects.requireNonNull(response.getBody()).getMessage());
     }
 
@@ -81,7 +81,7 @@ public class UserRequestServiceTests {
         rsListService.createRsList(rsEventRequest);
         rsListService.createRsList(rsEventRequest1);
 
-        ResponseEntity<UserResponse<UserEntity>> userResponseResponseEntity = userService.deleteUserById(userEntity.getId());
+        ResponseEntity<UserResponse<UserRequest>> userResponseResponseEntity = userService.deleteUserById(userEntity.getId());
         assertEquals("delete user success!", Objects.requireNonNull(userResponseResponseEntity.getBody()).getMessage());
     }
 
