@@ -3,9 +3,12 @@ package com.thoughtworks.rslist.dto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import org.apache.tomcat.jni.Time;
 
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 
 @Data
@@ -19,7 +22,7 @@ public class VoteRequest {
     @NotNull
     private Integer voteNum;
 
-    private Date voteTime;
+    private String voteTime;
 
     @NotNull
     private Integer userId;
@@ -29,8 +32,13 @@ public class VoteRequest {
 
     public VoteRequest(@NotNull Integer voteNum, @NotNull Integer userId, @NotNull Integer rsEventId) {
         this.voteNum = voteNum;
-        this.voteTime = new Date(Calendar.getInstance().getTime().getTime());
+        this.voteTime = this.getNowTime();
         this.userId = userId;
         this.rsEventId = rsEventId;
+    }
+
+    private String getNowTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
+        return sdf.format(new java.util.Date());
     }
 }

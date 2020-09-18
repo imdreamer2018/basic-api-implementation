@@ -27,7 +27,7 @@ public class VoteEntity {
 
     private Integer voteNum;
 
-    private Date voteTime;
+    private String voteTime;
 
     @ManyToOne()
     @JoinColumn(name = "user_id")
