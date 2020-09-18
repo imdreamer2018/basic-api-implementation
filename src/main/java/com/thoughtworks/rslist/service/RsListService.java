@@ -75,6 +75,7 @@ public class RsListService {
         RsEventEntity rsEventEntity = RsEventEntity.builder()
                 .eventName(rsEventRequest.getEventName())
                 .keyWord(rsEventRequest.getKeyWord())
+                .voteNum(rsEventRequest.getVoteNum())
                 .user(user.get())
                 .build();
         rsEventRepository.save(rsEventEntity);
@@ -105,7 +106,7 @@ public class RsListService {
         if (!rsEventRequest.getKeyWord().isEmpty())
             rsEvent.get().setKeyWord(rsEventRequest.getKeyWord());
         rsListResponse.setData(from(rsEvent.get()));
-
+        rsEventRepository.save(rsEvent.get());
         return ResponseEntity
                 .ok(rsListResponse);
 
@@ -143,6 +144,7 @@ public class RsListService {
                 .userId(rsEventEntity.getUser().getId())
                 .keyWord(rsEventEntity.getKeyWord())
                 .eventName(rsEventEntity.getEventName())
+                .voteNum(rsEventEntity.getVoteNum())
                 .build();
     }
 
