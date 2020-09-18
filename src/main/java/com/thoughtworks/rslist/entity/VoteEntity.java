@@ -4,35 +4,36 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
 @Transactional
 @Builder
-@Table(name = "rs_event")
-@AllArgsConstructor
 @NoArgsConstructor
-public class RsEventEntity {
+@AllArgsConstructor
+@Table(name = "vote")
+public class VoteEntity {
 
     @Id
-    @Column(name = "event_id")
+    @Column(name = "vote_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String eventName;
+    private Integer voteNum;
 
-    private String keyWord;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime voteTime;
 
     @ManyToOne()
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @OneToMany(mappedBy = "rsEvent", cascade = CascadeType.REMOVE)
-    private List<VoteEntity> votes;
-
-
+    @ManyToOne
+    @JoinColumn(name = "event_id")
+    private RsEventEntity rsEvent;
 }
