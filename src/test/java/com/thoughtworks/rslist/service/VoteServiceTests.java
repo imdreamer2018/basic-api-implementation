@@ -70,12 +70,12 @@ public class VoteServiceTests {
         voteRepository.save(voteEntity);
     }
 
-//    @AfterEach
-//    void endUp() {
-//        voteRepository.deleteAll();
-//        rsEventRepository.deleteAll();
-//        userRepository.deleteAll();
-//    }
+    @AfterEach
+    void endUp() {
+        voteRepository.deleteAll();
+        rsEventRepository.deleteAll();
+        userRepository.deleteAll();
+    }
 
     private static String getNowTime() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");

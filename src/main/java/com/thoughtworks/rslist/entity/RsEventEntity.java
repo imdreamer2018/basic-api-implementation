@@ -27,6 +27,8 @@ public class RsEventEntity {
 
     private String keyWord;
 
+    private Integer voteNum;
+
     @ManyToOne()
     @JoinColumn(name = "user_id")
     private UserEntity user;

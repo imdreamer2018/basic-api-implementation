@@ -52,16 +52,17 @@ public class RsListServiceTests {
         RsEventEntity rsEventEntity = RsEventEntity.builder()
                 .eventName("猪肉涨价啦")
                 .keyWord("经济")
+                .voteNum(0)
                 .user(userEntity)
                 .build();
         rsEventRepository.save(rsEventEntity);
     }
 
-    @AfterEach
-    void endUp() {
-        rsEventRepository.deleteAll();
-        userRepository.deleteAll();
-    }
+//    @AfterEach
+//    void endUp() {
+//        rsEventRepository.deleteAll();
+//        userRepository.deleteAll();
+//    }
 
     @Test
     void should_return_all_rs_list_json_when_get_rs_list() {
@@ -84,7 +85,7 @@ public class RsListServiceTests {
 
     @Test
     void should_return_rs_list_json_when_create_rs_list() {
-        RsEventRequest rsEventRequest = new RsEventRequest("猪肉涨价啦","经济", 1);
+        RsEventRequest rsEventRequest = new RsEventRequest("猪肉涨价啦111","经济", 1);
         ResponseEntity<RsEventResponse<RsEventRequest>> response = rsListService.createRsList(rsEventRequest);
         assertEquals("create rs list success!", Objects.requireNonNull(response.getBody()).getMessage());
     }

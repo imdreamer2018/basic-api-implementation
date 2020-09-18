@@ -53,6 +53,7 @@ public class RsControllerTests {
         RsEventEntity rsEventEntity = RsEventEntity.builder()
                 .eventName("猪肉涨价啦")
                 .keyWord("经济")
+                .voteNum(0)
                 .user(userEntity)
                 .build();
         rsEventRepository.save(rsEventEntity);
@@ -81,11 +82,8 @@ public class RsControllerTests {
 
     @Test
     void should_return_status_create_when_create_rs_list() throws Exception {
-        UserRequest userRequest = new UserRequest("yangqian",18,"male","qian.yang@twu.com","17607114747");
 
-        RsEventRequest rsEventRequest = new RsEventRequest("猪肉涨价啦","经济", 1);
-
-        userService.registerUser(userRequest);
+        RsEventRequest rsEventRequest = new RsEventRequest("猪肉涨价啦11","经济", 1);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(rsEventRequest);

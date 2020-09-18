@@ -75,6 +75,7 @@ public class RsListService {
         RsEventEntity rsEventEntity = RsEventEntity.builder()
                 .eventName(rsEventRequest.getEventName())
                 .keyWord(rsEventRequest.getKeyWord())
+                .voteNum(rsEventRequest.getVoteNum())
                 .user(user.get())
                 .build();
         rsEventRepository.save(rsEventEntity);

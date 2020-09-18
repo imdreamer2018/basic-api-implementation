@@ -27,9 +27,12 @@ public class RsEventRequest {
     @NotNull
     private Integer userId;
 
+    private Integer voteNum;
+
     public RsEventRequest(String eventName, String keyWord, @NotNull Integer userId) {
         this.eventName = eventName;
         this.keyWord = keyWord;
         this.userId = userId;
+        this.voteNum = 0;
     }
 }
