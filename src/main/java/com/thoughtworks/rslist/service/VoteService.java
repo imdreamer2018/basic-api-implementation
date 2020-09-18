@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -79,14 +81,25 @@ public class VoteService {
         VoteResponse<VoteRequest> voteResponse = new VoteResponse<>();
         VoteEntity voteEntity = VoteEntity.builder()
                 .voteNum(voteRequest.getVoteNum())
-                .voteTime(voteRequest.getVoteTime())
+                .voteTime(getNowTime())
                 .user(user.get())
                 .rsEvent(event.get())
                 .build();
         voteRepository.save(voteEntity);
+        UserEntity userEntity = user.get();
+        userEntity.setVoteNum(userEntity.getVoteNum() - voteRequest.getVoteNum());
+        userRepository.save(userEntity);
+        RsEventEntity rsEventEntity = event.get();
+        rsEventEntity.setVoteNum(rsEventEntity.getVoteNum() + voteRequest.getVoteNum());
+        rsEventRepository.save(rsEventEntity);
         voteResponse.setCode(201);
         voteResponse.setMessage("create vote success!");
         voteResponse.setData(entityToRequest(voteEntity));
         return ResponseEntity.created(URI.create("/rs/votes")).body(voteResponse);
+    }
+
+    private String getNowTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
+        return sdf.format(new Date());
     }
 }
