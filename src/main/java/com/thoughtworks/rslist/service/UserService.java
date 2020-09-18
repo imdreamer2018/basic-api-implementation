@@ -40,6 +40,7 @@ public class UserService {
                     .email(userRequest.getEmail())
                     .gender(userRequest.getGender())
                     .phone(userRequest.getPhone())
+                    .voteNum(userRequest.getVoteNum())
                     .build();
             userRepository.save(userEntity);
             userRequest.setUserId(userEntity.getId());

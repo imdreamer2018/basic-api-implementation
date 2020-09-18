@@ -57,6 +57,7 @@ public class VoteServiceTests {
         RsEventEntity rsEventEntity = RsEventEntity.builder()
                 .keyWord("经济")
                 .eventName("猪肉")
+                .voteNum(10)
                 .user(user)
                 .build();
         rsEventRepository.save(rsEventEntity);
