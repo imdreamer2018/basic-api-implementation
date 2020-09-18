@@ -59,4 +59,15 @@ public class GlobalExceptionHandler {
         return r;
     }
 
+    @ExceptionHandler(value = BaseVoteException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorDTO BaseVoteExceptionHandler(HttpServletRequest req, BaseVoteException e) {
+        ErrorDTO r = new ErrorDTO();
+        r.setMessage(e.getMessage());
+        r.setCode(400);
+        return r;
+    }
+
+
 }
