@@ -74,6 +74,8 @@ public class VoteService {
         Optional<RsEventEntity> event = rsEventRepository.findById(voteRequest.getRsEventId());
         if (!event.isPresent())
             throw new BaseRsListException("this event is not existed!");
+        if (user.get().getVoteNum() < voteRequest.getVoteNum())
+            throw new BaseVoteException("insufficient votes of this user!");
         VoteResponse<VoteRequest> voteResponse = new VoteResponse<>();
         VoteEntity voteEntity = VoteEntity.builder()
                 .voteNum(voteRequest.getVoteNum())

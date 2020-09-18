@@ -135,4 +135,16 @@ public class VoteServiceTests {
         assertEquals("this event is not existed!", baseRsListException.getMessage());
     }
 
+    @Test
+    void should_throw_bad_request_when_create_vote_and_user_has_vote_num_less_than_vote_num() {
+        VoteRequest voteRequest = VoteRequest.builder()
+                .voteNum(11)
+                .voteTime(new Date(Calendar.getInstance().getTime().getTime()))
+                .userId(1)
+                .rsEventId(1)
+                .build();
+        BaseVoteException baseVoteException = assertThrows(BaseVoteException.class, () -> voteService.createVote(voteRequest));
+        assertEquals("insufficient votes of this user!", baseVoteException.getMessage());
+    }
+
 }
