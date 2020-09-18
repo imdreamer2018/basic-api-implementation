@@ -1,9 +1,13 @@
 package com.thoughtworks.rslist.service;
 
+import com.thoughtworks.rslist.dto.RsEventRequest;
+import com.thoughtworks.rslist.dto.RsEventResponse;
 import com.thoughtworks.rslist.dto.UserResponse;
 import com.thoughtworks.rslist.dto.UserRequest;
 import com.thoughtworks.rslist.entity.UserEntity;
 import com.thoughtworks.rslist.exception.BaseUserException;
+import com.thoughtworks.rslist.repository.UserRepository;
+import org.apache.catalina.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -23,6 +27,12 @@ public class UserRequestServiceTests {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    RsListService rsListService;
+
+    @Autowired
+    UserRepository userRepository;
 
     @Test
     void should_return_user_info_when_create_user_success() {
@@ -58,14 +68,20 @@ public class UserRequestServiceTests {
 
     @Test
     void should_return_user_response_when_delete_user() {
-        userService.registerUser(UserRequest.builder()
+        UserEntity userEntity = UserEntity.builder()
                 .userName("yangqian")
                 .age(18)
                 .email("743295483@qq.com")
                 .gender("male")
                 .phone("17607114747")
-                .build());
-        ResponseEntity<UserResponse<UserEntity>> userResponseResponseEntity = userService.deleteUserById(1);
+                .build();
+        userRepository.save(userEntity);
+        RsEventRequest rsEventRequest = new RsEventRequest("111","经济", userEntity.getId());
+        RsEventRequest rsEventRequest1 = new RsEventRequest("222","经济", userEntity.getId());
+        rsListService.createRsList(rsEventRequest);
+        rsListService.createRsList(rsEventRequest1);
+
+        ResponseEntity<UserResponse<UserEntity>> userResponseResponseEntity = userService.deleteUserById(userEntity.getId());
         assertEquals("delete user success!", Objects.requireNonNull(userResponseResponseEntity.getBody()).getMessage());
     }
 

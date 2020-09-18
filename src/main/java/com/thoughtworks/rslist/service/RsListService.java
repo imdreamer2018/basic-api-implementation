@@ -17,6 +17,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.thoughtworks.rslist.service.UserService.userRequestList;
 
@@ -35,18 +36,20 @@ public class RsListService {
 
 
 
-    public ResponseEntity<RsEventResponse<List<RsEventEntity>>> getRsList(Integer start, Integer end) {
-        RsEventResponse<List<RsEventEntity>> rsListResponse = new RsEventResponse<>();
+    public ResponseEntity<RsEventResponse<List<RsEventRequest>>> getRsList(Integer start, Integer end) {
+        RsEventResponse<List<RsEventRequest>> rsListResponse = new RsEventResponse<>();
         rsListResponse.setCode(200);
         List<RsEventEntity> eventEntityList = rsEventRepository.findAll();
 
         if (start == null || end == null) {
             rsListResponse.setMessage("get all rs list success!");
-            rsListResponse.setData(eventEntityList);
+            rsListResponse.setData(eventEntityList.stream()
+                    .map(RsListService::from).collect(Collectors.toList()));
         }else {
             verifyEventId(start, end);
             rsListResponse.setMessage("get rs list in range success!");
-            rsListResponse.setData(eventEntityList.subList(start - 1, end));
+            rsListResponse.setData(eventEntityList.subList(start - 1, end).stream()
+                    .map(RsListService::from).collect(Collectors.toList()));
         }
         return ResponseEntity.ok().body(rsListResponse);
     }
@@ -130,6 +133,14 @@ public class RsListService {
         if (startEventId > endEventId || startEventId <= 0 || startEventId > tempRsList.size() || endEventId > tempRsList.size()) {
             throw new BaseRsListException("invalid input cause null point exception");
         }
+    }
+
+    public static RsEventRequest from(RsEventEntity rsEventEntity) {
+        return RsEventRequest.builder()
+                .userId(rsEventEntity.getId())
+                .keyWord(rsEventEntity.getKeyWord())
+                .eventName(rsEventEntity.getEventName())
+                .build();
     }
 
 
