@@ -46,7 +46,7 @@ public class VoteService {
     public ResponseEntity<VoteResponse<VoteRequest>> getVoteByVoteId(Integer voteId) {
         Optional<VoteEntity> vote = voteRepository.findById(voteId);
         if (!vote.isPresent()) {
-            throw new BaseVoteException("can not found this vote!");
+            throw new BaseVoteException("can not find this vote!");
         }
         VoteResponse<VoteRequest> voteResponse = new VoteResponse<>();
         voteResponse.setCode(200);

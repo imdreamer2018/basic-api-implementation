@@ -4,8 +4,10 @@ import com.thoughtworks.rslist.dto.VoteRequest;
 import com.thoughtworks.rslist.dto.VoteResponse;
 import com.thoughtworks.rslist.entity.RsEventEntity;
 import com.thoughtworks.rslist.entity.UserEntity;
+import com.thoughtworks.rslist.exception.BaseVoteException;
 import com.thoughtworks.rslist.repository.RsEventRepository;
 import com.thoughtworks.rslist.repository.UserRepository;
+import com.thoughtworks.rslist.repository.VoteRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +17,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class VoteServiceTests {
@@ -30,6 +31,9 @@ public class VoteServiceTests {
 
     @Autowired
     RsEventRepository rsEventRepository;
+
+    @Autowired
+    VoteRepository voteRepository;
 
     @BeforeEach
     void setUp() {
@@ -63,6 +67,13 @@ public class VoteServiceTests {
         ResponseEntity<VoteResponse<VoteRequest>> vote = voteService.getVoteByVoteId(1);
         assertEquals(200, vote.getStatusCodeValue());
         assertEquals("get vote success!", Objects.requireNonNull(vote.getBody()).getMessage());
+    }
+
+    @Test
+    void should_throw_bad_request_when_get_votes_by_vote_id_can_not_found() {
+        voteRepository.deleteAll();
+        BaseVoteException baseVoteException = assertThrows(BaseVoteException.class, () -> voteService.getVoteByVoteId(1));
+        assertEquals("can not find this vote!", baseVoteException.getMessage());
     }
 
 }
