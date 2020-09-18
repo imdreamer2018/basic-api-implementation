@@ -13,6 +13,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class UserRequest {
 
+    private Integer userId;
+
     @Size(max = 8)
     @NotEmpty
     @JsonProperty("user_name")

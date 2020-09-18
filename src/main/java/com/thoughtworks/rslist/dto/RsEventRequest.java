@@ -18,6 +18,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class RsEventRequest {
 
+    private Integer eventId;
+
     private String eventName;
 
     private String keyWord;
