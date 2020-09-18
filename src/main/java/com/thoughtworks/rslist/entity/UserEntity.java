@@ -35,7 +35,7 @@ public class UserEntity {
     private String phone;
 
     @Column(name = "vote_num")
-    private Integer voteNum = 10;
+    private Integer voteNum;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<RsEventEntity> rsEvents;
@@ -43,4 +43,12 @@ public class UserEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<VoteEntity> votes;
 
+    public UserEntity(String userName, Integer age, String gender, String email, String phone) {
+        this.userName = userName;
+        this.age = age;
+        this.gender = gender;
+        this.email = email;
+        this.phone = phone;
+        this.voteNum = 10;
+    }
 }

@@ -4,16 +4,22 @@ import com.thoughtworks.rslist.dto.VoteRequest;
 import com.thoughtworks.rslist.dto.VoteResponse;
 import com.thoughtworks.rslist.entity.RsEventEntity;
 import com.thoughtworks.rslist.entity.UserEntity;
+import com.thoughtworks.rslist.entity.VoteEntity;
+import com.thoughtworks.rslist.exception.BaseRsListException;
+import com.thoughtworks.rslist.exception.BaseUserException;
 import com.thoughtworks.rslist.exception.BaseVoteException;
 import com.thoughtworks.rslist.repository.RsEventRepository;
 import com.thoughtworks.rslist.repository.UserRepository;
 import com.thoughtworks.rslist.repository.VoteRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
@@ -43,6 +49,7 @@ public class VoteServiceTests {
                 .gender("male")
                 .email("123@123.com")
                 .phone("17607114747")
+                .voteNum(10)
                 .build();
         userRepository.save(user);
 
@@ -52,6 +59,21 @@ public class VoteServiceTests {
                 .user(user)
                 .build();
         rsEventRepository.save(rsEventEntity);
+
+        VoteEntity voteEntity = VoteEntity.builder()
+                .voteNum(1)
+                .voteTime(new Date(Calendar.getInstance().getTime().getTime()))
+                .user(user)
+                .rsEvent(rsEventEntity)
+                .build();
+        voteRepository.save(voteEntity);
+    }
+
+    @AfterEach
+    void endUp() {
+        voteRepository.deleteAll();
+        rsEventRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
@@ -74,6 +96,43 @@ public class VoteServiceTests {
         voteRepository.deleteAll();
         BaseVoteException baseVoteException = assertThrows(BaseVoteException.class, () -> voteService.getVoteByVoteId(1));
         assertEquals("can not find this vote!", baseVoteException.getMessage());
+    }
+
+    @Test
+    void should_return_vote_info_when_create_vote_by_user_id_and_event_id() {
+        VoteRequest voteRequest = VoteRequest.builder()
+                .voteNum(1)
+                .voteTime(new Date(Calendar.getInstance().getTime().getTime()))
+                .userId(1)
+                .rsEventId(1)
+                .build();
+        ResponseEntity<VoteResponse<VoteRequest>> vote = voteService.createVote(voteRequest);
+        assertEquals(201, vote.getStatusCodeValue());
+        assertEquals("create vote success!", Objects.requireNonNull(vote.getBody()).getMessage());
+    }
+
+    @Test
+    void should_throw_bad_request_when_create_vote_by_error_user_id() {
+        VoteRequest voteRequest = VoteRequest.builder()
+                .voteNum(1)
+                .voteTime(new Date(Calendar.getInstance().getTime().getTime()))
+                .userId(3123)
+                .rsEventId(1)
+                .build();
+        BaseUserException baseUserException = assertThrows(BaseUserException.class, () -> voteService.createVote(voteRequest));
+        assertEquals("this user is not existed!", baseUserException.getMessage());
+    }
+
+    @Test
+    void should_throw_bad_request_when_create_vote_by_error_event_id() {
+        VoteRequest voteRequest = VoteRequest.builder()
+                .voteNum(1)
+                .voteTime(new Date(Calendar.getInstance().getTime().getTime()))
+                .userId(1)
+                .rsEventId(231)
+                .build();
+        BaseRsListException baseRsListException = assertThrows(BaseRsListException.class, () -> voteService.createVote(voteRequest));
+        assertEquals("this event is not existed!", baseRsListException.getMessage());
     }
 
 }
