@@ -41,13 +41,13 @@ public class RsController {
 
     @PutMapping("/lists/{eventId}")
     @ResponseBody
-    public ResponseEntity<RsEventResponse<RsEventEntity>> updateRsList(@PathVariable Integer eventId, @RequestBody RsEventRequest rsEventRequest) {
+    public ResponseEntity<RsEventResponse<RsEventRequest>> updateRsList(@PathVariable Integer eventId, @RequestBody RsEventRequest rsEventRequest) {
         return rsListService.updateRsListByEventId(eventId, rsEventRequest);
     }
 
     @DeleteMapping("/lists/{eventId}")
     @ResponseBody
-    public RsEventResponse<RsEventRequest> deleleRsList(@PathVariable Integer eventId) {
+    public ResponseEntity<RsEventResponse<RsEventRequest>> deleleRsList(@PathVariable Integer eventId) {
         return rsListService.deleteRsLIstByEventId(eventId);
     }
 }
