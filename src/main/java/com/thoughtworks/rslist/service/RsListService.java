@@ -1,8 +1,7 @@
 package com.thoughtworks.rslist.service;
 
-import com.thoughtworks.rslist.dto.RsEventResponse;
 import com.thoughtworks.rslist.dto.RsEventRequest;
-import com.thoughtworks.rslist.dto.UserRequest;
+import com.thoughtworks.rslist.dto.RsEventResponse;
 import com.thoughtworks.rslist.entity.RsEventEntity;
 import com.thoughtworks.rslist.entity.UserEntity;
 import com.thoughtworks.rslist.exception.BaseRsListException;
@@ -14,12 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static com.thoughtworks.rslist.service.UserService.userRequestList;
 
 @Service
 public class RsListService {
@@ -32,8 +28,6 @@ public class RsListService {
 
     @Autowired
     UserRepository userRepository;
-    static List<RsEventRequest> tempRsList = new ArrayList<>();
-
 
 
     public ResponseEntity<RsEventResponse<List<RsEventRequest>>> getRsList(Integer start, Integer end) {
@@ -46,7 +40,6 @@ public class RsListService {
             rsListResponse.setData(eventEntityList.stream()
                     .map(RsListService::from).collect(Collectors.toList()));
         }else {
-            verifyEventId(start, end);
             rsListResponse.setMessage("get rs list in range success!");
             rsListResponse.setData(eventEntityList.subList(start - 1, end).stream()
                     .map(RsListService::from).collect(Collectors.toList()));
@@ -126,17 +119,6 @@ public class RsListService {
         return ResponseEntity.ok(rsListResponse);
     }
 
-    private void verifyEventId(Integer eventId) {
-        if (eventId <= 0 || eventId > tempRsList.size()) {
-            throw new BaseRsListException("event id is invalid input cause null point exception");
-        }
-    }
-
-    private void verifyEventId(Integer startEventId, Integer endEventId) {
-        if (startEventId > endEventId || startEventId <= 0 || startEventId > tempRsList.size() || endEventId > tempRsList.size()) {
-            throw new BaseRsListException("invalid input cause null point exception");
-        }
-    }
 
     private static RsEventRequest from(RsEventEntity rsEventEntity) {
         return RsEventRequest.builder()
