@@ -54,14 +54,14 @@ public class RsListService {
         return ResponseEntity.ok().body(rsListResponse);
     }
 
-    public ResponseEntity<RsEventResponse<RsEventEntity>> getRsListByEventId(Integer eventId) {
-        RsEventResponse<RsEventEntity> reListResponse = new RsEventResponse<>();
+    public ResponseEntity<RsEventResponse<RsEventRequest>> getRsListByEventId(Integer eventId) {
+        RsEventResponse<RsEventRequest> reListResponse = new RsEventResponse<>();
         Optional<RsEventEntity> eventEntity = rsEventRepository.findById(eventId);
         if (!eventEntity.isPresent()) {
             throw new BaseRsListException("invalid id");
         }
         reListResponse.setMessage("get rs list by id success!");
-        reListResponse.setData(eventEntity.get());
+        reListResponse.setData(from(eventEntity.get()));
 
         return ResponseEntity.ok().body(reListResponse);
     }
@@ -72,12 +72,13 @@ public class RsListService {
         if (!user.isPresent()) {
             throw new BaseRsListException("user is not existed!");
         }
-        rsEventRepository.save(RsEventEntity.builder()
+        RsEventEntity rsEventEntity = RsEventEntity.builder()
                 .eventName(rsEventRequest.getEventName())
                 .keyWord(rsEventRequest.getKeyWord())
                 .user(user.get())
-                .build());
-
+                .build();
+        rsEventRepository.save(rsEventEntity);
+        rsEventRequest.setEventId(rsEventEntity.getId());
         rsListResponse.setCode(201);
         rsListResponse.setMessage("create rs list success!");
         rsListResponse.setData(rsEventRequest);
@@ -87,7 +88,7 @@ public class RsListService {
                 .body(rsListResponse);
     }
 
-    public ResponseEntity<RsEventResponse<RsEventEntity>> updateRsListByEventId(Integer eventId, RsEventRequest rsEventRequest) {
+    public ResponseEntity<RsEventResponse<RsEventRequest>> updateRsListByEventId(Integer eventId, RsEventRequest rsEventRequest) {
 
         Optional<RsEventEntity> rsEvent = rsEventRepository.findById(eventId);
         if (!rsEvent.isPresent()) {
@@ -96,31 +97,32 @@ public class RsListService {
         if (!rsEvent.get().getId().equals(rsEventRequest.getUserId())) {
             throw new UnAuthenticatedException("FORBIDDEN");
         }
-        RsEventResponse<RsEventEntity> rsListResponse = new RsEventResponse<>();
+        RsEventResponse<RsEventRequest> rsListResponse = new RsEventResponse<>();
         rsListResponse.setCode(200);
         rsListResponse.setMessage("update rs list by event id success!");
         if (!rsEventRequest.getEventName().isEmpty())
             rsEvent.get().setEventName(rsEventRequest.getEventName());
         if (!rsEventRequest.getKeyWord().isEmpty())
             rsEvent.get().setKeyWord(rsEventRequest.getKeyWord());
-        rsListResponse.setData(rsEvent.get());
+        rsListResponse.setData(from(rsEvent.get()));
 
         return ResponseEntity
                 .ok(rsListResponse);
 
     }
 
-    public RsEventResponse<RsEventRequest> deleteRsLIstByEventId(Integer eventId) {
-        verifyEventId(eventId);
-        RsEventRequest currentRsEventRequest = tempRsList.get(eventId - 1);
-        tempRsList.remove(eventId - 1);
-
+    public ResponseEntity<RsEventResponse<RsEventRequest>> deleteRsLIstByEventId(Integer eventId) {
+        Optional<RsEventEntity> rsEvent = rsEventRepository.findById(eventId);
+        if (!rsEvent.isPresent()) {
+            throw new BaseRsListException("can not found this event!");
+        }
+        rsEventRepository.deleteById(eventId);
         RsEventResponse<RsEventRequest> rsListResponse = new RsEventResponse<>();
         rsListResponse.setCode(200);
         rsListResponse.setMessage("delete rs list by event id success!");
-        rsListResponse.setData(currentRsEventRequest);
+        rsListResponse.setData(from(rsEvent.get()));
 
-        return rsListResponse;
+        return ResponseEntity.ok(rsListResponse);
     }
 
     private void verifyEventId(Integer eventId) {
@@ -135,9 +137,10 @@ public class RsListService {
         }
     }
 
-    public static RsEventRequest from(RsEventEntity rsEventEntity) {
+    private static RsEventRequest from(RsEventEntity rsEventEntity) {
         return RsEventRequest.builder()
-                .userId(rsEventEntity.getId())
+                .eventId(rsEventEntity.getId())
+                .userId(rsEventEntity.getUser().getId())
                 .keyWord(rsEventEntity.getKeyWord())
                 .eventName(rsEventEntity.getEventName())
                 .build();

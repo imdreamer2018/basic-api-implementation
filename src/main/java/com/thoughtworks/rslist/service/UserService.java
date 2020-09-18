@@ -20,19 +20,13 @@ public class UserService {
     private final UserRepository userRepository;
 
 
-    public static List<UserRequest> userRequestList = initUser();
+    public static List<UserRequest> userRequestList = new ArrayList<>();
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
 
-    private static List<UserRequest> initUser() {
-        List<UserRequest> userRequestList = new ArrayList<>();
-        userRequestList.add(new UserRequest("yangqian",24,"male","qian.yang@twu.com","17607114747"));
-        userRequestList.add(new UserRequest("nannan",23,"female","yn.guo@twu.com","17607114747"));
-        return userRequestList;
-    }
 
     public ResponseEntity<UserResponse<UserRequest>> registerUser(UserRequest userRequest) {
         UserResponse<UserRequest> userResponse = new UserResponse<>();
@@ -40,14 +34,15 @@ public class UserService {
         if (user.isPresent()) {
             throw new BaseUserException("register user that username is existed");
         } else {
-            userRepository.save(UserEntity.builder()
+            UserEntity userEntity = UserEntity.builder()
                     .userName(userRequest.getUserName())
                     .age(userRequest.getAge())
                     .email(userRequest.getEmail())
                     .gender(userRequest.getGender())
                     .phone(userRequest.getPhone())
-                    .build());
-
+                    .build();
+            userRepository.save(userEntity);
+            userRequest.setUserId(userEntity.getId());
             userResponse.setCode(201);
             userResponse.setMessage("register user success!");
             userResponse.setData(userRequest);
