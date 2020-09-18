@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
@@ -64,7 +65,7 @@ public class VoteServiceTests {
 
         VoteEntity voteEntity = VoteEntity.builder()
                 .voteNum(1)
-                .voteTime(getNowTime())
+                .voteTime(LocalDateTime.now())
                 .user(user)
                 .rsEvent(rsEventEntity)
                 .build();
@@ -73,9 +74,9 @@ public class VoteServiceTests {
 
     @AfterEach
     void endUp() {
-        voteRepository.deleteAll();
-        rsEventRepository.deleteAll();
-        userRepository.deleteAll();
+//        voteRepository.deleteAll();
+//        rsEventRepository.deleteAll();
+//        userRepository.deleteAll();
     }
 
     private static String getNowTime() {
@@ -109,7 +110,7 @@ public class VoteServiceTests {
     void should_return_vote_info_when_create_vote_by_user_id_and_event_id() {
         VoteRequest voteRequest = VoteRequest.builder()
                 .voteNum(1)
-                .voteTime(getNowTime())
+                .voteTime(LocalDateTime.now())
                 .userId(1)
                 .rsEventId(1)
                 .build();
@@ -122,7 +123,7 @@ public class VoteServiceTests {
     void should_throw_bad_request_when_create_vote_by_error_user_id() {
         VoteRequest voteRequest = VoteRequest.builder()
                 .voteNum(1)
-                .voteTime(getNowTime())
+                .voteTime(LocalDateTime.now())
                 .userId(3123)
                 .rsEventId(1)
                 .build();
@@ -134,7 +135,7 @@ public class VoteServiceTests {
     void should_throw_bad_request_when_create_vote_by_error_event_id() {
         VoteRequest voteRequest = VoteRequest.builder()
                 .voteNum(1)
-                .voteTime(getNowTime())
+                .voteTime(LocalDateTime.now())
                 .userId(1)
                 .rsEventId(231)
                 .build();
@@ -146,7 +147,7 @@ public class VoteServiceTests {
     void should_throw_bad_request_when_create_vote_and_user_has_vote_num_less_than_vote_num() {
         VoteRequest voteRequest = VoteRequest.builder()
                 .voteNum(11)
-                .voteTime(getNowTime())
+                .voteTime(LocalDateTime.now())
                 .userId(1)
                 .rsEventId(1)
                 .build();

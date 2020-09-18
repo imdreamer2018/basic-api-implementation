@@ -15,8 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -50,7 +49,7 @@ public class VoteService {
         return VoteRequest.builder()
                 .id(voteEntity.getId())
                 .voteNum(voteEntity.getVoteNum())
-                .voteTime(voteEntity.getVoteTime())
+                .voteTime(LocalDateTime.now())
                 .userId(voteEntity.getUser().getId())
                 .rsEventId(voteEntity.getRsEvent().getId())
                 .build();
@@ -81,7 +80,7 @@ public class VoteService {
         VoteResponse<VoteRequest> voteResponse = new VoteResponse<>();
         VoteEntity voteEntity = VoteEntity.builder()
                 .voteNum(voteRequest.getVoteNum())
-                .voteTime(getNowTime())
+                .voteTime(LocalDateTime.now())
                 .user(user.get())
                 .rsEvent(event.get())
                 .build();
@@ -98,8 +97,4 @@ public class VoteService {
         return ResponseEntity.created(URI.create("/rs/votes")).body(voteResponse);
     }
 
-    private String getNowTime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
-        return sdf.format(new Date());
-    }
 }

@@ -32,6 +32,7 @@ public class UserRequest implements Serializable{
     @Pattern(regexp = "1(\\d){10}")
     private String phone;
 
+    @Builder.Default
     private Integer voteNum = 10;
 
     public UserRequest(@Size(max = 8) @NotNull String userName, @NotNull @Min(18) @Max(100) Integer age, @NotNull String gender, @Email String email, @Pattern(regexp = "1(\\d){10}") String phone) {

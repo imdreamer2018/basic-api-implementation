@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -18,7 +19,7 @@ public class VoteRequest implements Serializable {
     @NotNull
     private Integer voteNum;
 
-    private String voteTime;
+    private LocalDateTime voteTime;
 
     @NotNull
     private Integer userId;
