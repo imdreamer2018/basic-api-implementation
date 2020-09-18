@@ -34,6 +34,9 @@ public class UserEntity {
 
     private String phone;
 
+    @Column(name = "vote_num")
+    private Integer voteNum = 10;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<RsEventEntity> rsEvents;
 

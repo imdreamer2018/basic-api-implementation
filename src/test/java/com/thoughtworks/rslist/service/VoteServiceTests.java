@@ -62,7 +62,7 @@ public class VoteServiceTests {
     void should_return_vote_when_get_votes_by_vote_id() {
         ResponseEntity<VoteResponse<VoteRequest>> vote = voteService.getVoteByVoteId(1);
         assertEquals(200, vote.getStatusCodeValue());
-        assertEquals("get vote success!", vote.getBody().getMessage());
+        assertEquals("get vote success!", Objects.requireNonNull(vote.getBody()).getMessage());
     }
 
 }
