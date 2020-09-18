@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.time.LocalDateTime;
 
 @Entity
@@ -26,8 +27,7 @@ public class VoteEntity {
 
     private Integer voteNum;
 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDateTime voteTime;
+    private Date voteTime;
 
     @ManyToOne()
     @JoinColumn(name = "user_id")
