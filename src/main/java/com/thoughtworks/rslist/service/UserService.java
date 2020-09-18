@@ -51,38 +51,51 @@ public class UserService {
     }
 
 
-    public ResponseEntity<UserResponse<UserEntity>> getUser(Integer userId) {
+    public ResponseEntity<UserResponse<UserRequest>> getUser(Integer userId) {
         Optional<UserEntity> user = userRepository.findById(userId);
         if (!user.isPresent()) {
             throw new BaseUserException("can not find this user!");
         }
-        UserResponse<UserEntity> userResponse = new UserResponse<>();
+        UserResponse<UserRequest> userResponse = new UserResponse<>();
         userResponse.setCode(200);
         userResponse.setMessage("get user info success!");
-        userResponse.setData(user.get());
+        userResponse.setData(from(user.get()));
         return ResponseEntity.ok(userResponse);
     }
 
-    public ResponseEntity<UserResponse<List<UserEntity>>> getAllUser() {
+    public ResponseEntity<UserResponse<List<UserRequest>>> getAllUser() {
         List<UserEntity> allUsers = userRepository.findAll();
-        UserResponse<List<UserEntity>> userResponse = new UserResponse<>();
+        UserResponse<List<UserRequest>> userResponse = new UserResponse<>();
         userResponse.setCode(200);
         userResponse.setMessage("get all user info success!");
-        userResponse.setData(allUsers);
+        userResponse.setData(allUsers.stream()
+                .map(UserService::from)
+                .collect(Collectors.toList()));
 
         return ResponseEntity.ok().body(userResponse);
     }
 
-    public ResponseEntity<UserResponse<UserEntity>> deleteUserById(Integer userId) {
+    public ResponseEntity<UserResponse<UserRequest>> deleteUserById(Integer userId) {
         Optional<UserEntity> user = userRepository.findById(userId);
-        UserResponse<UserEntity> userResponse = new UserResponse<>();
+        UserResponse<UserRequest> userResponse = new UserResponse<>();
         if (!user.isPresent()) {
             throw new BaseUserException("the user is not existed!");
         }
         userRepository.deleteById(userId);
         userResponse.setCode(200);
         userResponse.setMessage("delete user success!");
-        userResponse.setData(user.get());
+        userResponse.setData(from(user.get()));
         return ResponseEntity.ok(userResponse);
+    }
+
+    private static UserRequest from(UserEntity userEntity) {
+        return UserRequest.builder()
+                .userId(userEntity.getId())
+                .userName(userEntity.getUserName())
+                .age(userEntity.getAge())
+                .gender(userEntity.getGender())
+                .email(userEntity.getEmail())
+                .phone(userEntity.getPhone())
+                .build();
     }
 }

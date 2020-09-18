@@ -25,7 +25,7 @@ public class UserController {
 
     @GetMapping("users/{userId}")
     @ResponseBody
-    public ResponseEntity<UserResponse<UserEntity>> getUser(@PathVariable Integer userId) {
+    public ResponseEntity<UserResponse<UserRequest>> getUser(@PathVariable Integer userId) {
         return userService.getUser(userId);
     }
 
@@ -37,7 +37,7 @@ public class UserController {
 
     @DeleteMapping("users/{userId}")
     @ResponseBody
-    public ResponseEntity deleteUser(@PathVariable Integer userId) {
+    public ResponseEntity<UserResponse<UserRequest>> deleteUser(@PathVariable Integer userId) {
         return userService.deleteUserById(userId);
     }
 
