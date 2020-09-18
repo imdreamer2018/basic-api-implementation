@@ -5,6 +5,9 @@ import com.thoughtworks.rslist.dto.RsEventRequest;
 import com.thoughtworks.rslist.entity.RsEventEntity;
 import com.thoughtworks.rslist.service.RsListService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -21,9 +24,9 @@ public class RsController {
     @GetMapping("/lists")
     @ResponseStatus()
     @ResponseBody
-    public ResponseEntity getRsList(@RequestParam(required = false) Integer start,
-                                    @RequestParam(required = false) Integer end) {
-        return rsListService.getRsList(start, end);
+    public ResponseEntity getRsList(
+            @PageableDefault Pageable pageable) {
+        return rsListService.getRsList(pageable);
     }
 
     @GetMapping("/lists/{eventId}")

@@ -9,8 +9,11 @@ import com.thoughtworks.rslist.exception.UnAuthenticatedException;
 import com.thoughtworks.rslist.repository.RsEventRepository;
 import com.thoughtworks.rslist.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
 
 import java.net.URI;
 import java.util.List;
@@ -30,20 +33,13 @@ public class RsListService {
     UserRepository userRepository;
 
 
-    public ResponseEntity<RsEventResponse<List<RsEventRequest>>> getRsList(Integer start, Integer end) {
+    public ResponseEntity<RsEventResponse<List<RsEventRequest>>> getRsList(Pageable pageable) {
         RsEventResponse<List<RsEventRequest>> rsListResponse = new RsEventResponse<>();
         rsListResponse.setCode(200);
-        List<RsEventEntity> eventEntityList = rsEventRepository.findAll();
-
-        if (start == null || end == null) {
-            rsListResponse.setMessage("get all rs list success!");
-            rsListResponse.setData(eventEntityList.stream()
-                    .map(RsListService::from).collect(Collectors.toList()));
-        }else {
-            rsListResponse.setMessage("get rs list in range success!");
-            rsListResponse.setData(eventEntityList.subList(start - 1, end).stream()
-                    .map(RsListService::from).collect(Collectors.toList()));
-        }
+        Page<RsEventEntity> eventEntityList = rsEventRepository.findAll(pageable);
+        rsListResponse.setMessage("get all rs list success!");
+        rsListResponse.setData(eventEntityList.stream()
+                .map(RsListService::from).collect(Collectors.toList()));
         return ResponseEntity.ok().body(rsListResponse);
     }
 

@@ -25,6 +25,7 @@ public class RsEventRequest implements Serializable{
     @NotNull
     private Integer userId;
 
+    @Builder.Default
     private Integer voteNum = 10;
 
     public RsEventRequest(String eventName, String keyWord, @NotNull Integer userId) {
