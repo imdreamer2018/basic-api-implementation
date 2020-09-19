@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Calendar;
@@ -65,7 +66,7 @@ public class VoteServiceTests {
 
         VoteEntity voteEntity = VoteEntity.builder()
                 .voteNum(1)
-                .voteTime(LocalDateTime.now())
+                .voteTime(new Timestamp((System.currentTimeMillis())))
                 .user(user)
                 .rsEvent(rsEventEntity)
                 .build();
@@ -110,7 +111,7 @@ public class VoteServiceTests {
     void should_return_vote_info_when_create_vote_by_user_id_and_event_id() {
         VoteRequest voteRequest = VoteRequest.builder()
                 .voteNum(1)
-                .voteTime(LocalDateTime.now())
+                .voteTime(new Timestamp((System.currentTimeMillis())))
                 .userId(1)
                 .rsEventId(1)
                 .build();
@@ -123,7 +124,7 @@ public class VoteServiceTests {
     void should_throw_bad_request_when_create_vote_by_error_user_id() {
         VoteRequest voteRequest = VoteRequest.builder()
                 .voteNum(1)
-                .voteTime(LocalDateTime.now())
+                .voteTime(new Timestamp((System.currentTimeMillis())))
                 .userId(3123)
                 .rsEventId(1)
                 .build();
@@ -135,7 +136,7 @@ public class VoteServiceTests {
     void should_throw_bad_request_when_create_vote_by_error_event_id() {
         VoteRequest voteRequest = VoteRequest.builder()
                 .voteNum(1)
-                .voteTime(LocalDateTime.now())
+                .voteTime(new Timestamp((System.currentTimeMillis())))
                 .userId(1)
                 .rsEventId(231)
                 .build();
@@ -147,12 +148,20 @@ public class VoteServiceTests {
     void should_throw_bad_request_when_create_vote_and_user_has_vote_num_less_than_vote_num() {
         VoteRequest voteRequest = VoteRequest.builder()
                 .voteNum(11)
-                .voteTime(LocalDateTime.now())
+                .voteTime(new Timestamp((System.currentTimeMillis())))
                 .userId(1)
                 .rsEventId(1)
                 .build();
         BaseVoteException baseVoteException = assertThrows(BaseVoteException.class, () -> voteService.createVote(voteRequest));
         assertEquals("insufficient votes of this user!", baseVoteException.getMessage());
+    }
+
+    @Test
+    void should_return_votes_info_when_get_vote_by_timestamp_between() {
+        long start = (System.currentTimeMillis()) - 40000;
+        long end = (System.currentTimeMillis()) + 40000;
+        ResponseEntity<VoteResponse<List<VoteRequest>>> votesByTimeRange = voteService.getVotesByTimeRange(start, end);
+        assertEquals("get votes success!", Objects.requireNonNull(votesByTimeRange.getBody()).getMessage());
     }
 
 }

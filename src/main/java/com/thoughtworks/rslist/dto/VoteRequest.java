@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Getter
@@ -19,7 +20,7 @@ public class VoteRequest implements Serializable {
     @NotNull
     private Integer voteNum;
 
-    private LocalDateTime voteTime;
+    private Timestamp voteTime;
 
     @NotNull
     private Integer userId;

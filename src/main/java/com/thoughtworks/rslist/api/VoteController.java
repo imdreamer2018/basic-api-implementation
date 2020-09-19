@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @RequestMapping(path = "/rs")
@@ -30,5 +31,11 @@ public class VoteController {
     @PostMapping("/votes")
     public ResponseEntity createVote(@Validated @RequestBody VoteRequest voteRequest) {
         return voteService.createVote(voteRequest);
+    }
+
+    @GetMapping("/votes/range")
+    public ResponseEntity getVotesByTimeRange(@RequestParam long startTime,
+                                              @RequestParam long endTime) {
+        return voteService.getVotesByTimeRange(startTime, endTime);
     }
 }

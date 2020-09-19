@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -66,7 +67,7 @@ public class RsListServiceTests {
 
     @Test
     void should_return_all_rs_list_json_when_get_rs_list() {
-        ResponseEntity<RsEventResponse<List<RsEventRequest>>> response = rsListService.getRsList(null, null);
+        ResponseEntity<RsEventResponse<List<RsEventRequest>>> response = rsListService.getRsList(Pageable.unpaged());
         assertEquals("get all rs list success!", Objects.requireNonNull(response.getBody()).getMessage());
     }
 

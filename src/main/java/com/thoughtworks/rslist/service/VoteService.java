@@ -11,13 +11,21 @@ import com.thoughtworks.rslist.exception.BaseVoteException;
 import com.thoughtworks.rslist.repository.RsEventRepository;
 import com.thoughtworks.rslist.repository.UserRepository;
 import com.thoughtworks.rslist.repository.VoteRepository;
+import org.graalvm.compiler.debug.TimeSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,7 +57,7 @@ public class VoteService {
         return VoteRequest.builder()
                 .id(voteEntity.getId())
                 .voteNum(voteEntity.getVoteNum())
-                .voteTime(LocalDateTime.now())
+                .voteTime(new Timestamp((System.currentTimeMillis())))
                 .userId(voteEntity.getUser().getId())
                 .rsEventId(voteEntity.getRsEvent().getId())
                 .build();
@@ -80,7 +88,7 @@ public class VoteService {
         VoteResponse<VoteRequest> voteResponse = new VoteResponse<>();
         VoteEntity voteEntity = VoteEntity.builder()
                 .voteNum(voteRequest.getVoteNum())
-                .voteTime(LocalDateTime.now())
+                .voteTime(new Timestamp((System.currentTimeMillis())))
                 .user(user.get())
                 .rsEvent(event.get())
                 .build();
@@ -97,4 +105,16 @@ public class VoteService {
         return ResponseEntity.created(URI.create("/rs/votes")).body(voteResponse);
     }
 
+    public ResponseEntity<VoteResponse<List<VoteRequest>>> getVotesByTimeRange(long startTime, long endTime) {
+        List<VoteEntity> voteEntities = voteRepository.findAllByVoteTimeBetween(new Timestamp(startTime), new Timestamp(endTime));
+        List<VoteRequest> votes = voteEntities.stream()
+                .map(VoteService::entityToRequest).collect(Collectors.toList());
+        VoteResponse<List<VoteRequest>> voteResponse= new VoteResponse<>();
+        voteResponse.setCode(200);
+        voteResponse.setMessage("get votes success!");
+        voteResponse.setData(votes);
+        return ResponseEntity.ok(voteResponse);
+
+
+    }
 }
